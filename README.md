@@ -1,6 +1,7 @@
 # 🎓 Sistem Manajemen Magang Mahasiswa
 
-Nama website kami adalah SIGMA (Sistem Informasi Magang Mahasiswa) 
+Nama website kami adalah SIGMA (Sistem Informasi Magang Mahasiswa)
+
 SIGMA adalah aplikasi berbasis web yang dirancang untuk membantu proses manajemen magang mahasiswa secara terintegrasi.
 
 ---
