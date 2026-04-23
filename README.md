@@ -1,14 +1,12 @@
 # 🎓 Sistem Manajemen Magang Mahasiswa
 
-Nama website kami adalah SIGMA (Sistem Informasi Magang Mahasiswa)
-
-SIGMA adalah aplikasi berbasis web yang dirancang untuk membantu proses manajemen magang mahasiswa secara terintegrasi.
+Nama WEBSITE : SIGMA (Sistem Informasi Magang Mahasiswa)
 
 ---
 
 ## 📌 Deskripsi Sistem
 
-Aplikasi berbasis web yang digunakan untuk mengelola proses magang mahasiswa mulai dari pendaftaran, seleksi oleh mitra, monitoring kegiatan magang, hingga penilaian dan laporan akhir.
+SIGMA adalah aplikasi berbasis web yang digunakan untuk mengelola proses magang mahasiswa mulai dari pendaftaran, seleksi oleh mitra, monitoring kegiatan magang, hingga penilaian dan laporan akhir secara terintegrasi.
 
 ---
 
