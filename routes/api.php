@@ -8,20 +8,17 @@ use App\Http\Controllers\LowonganController;
 use App\Http\Controllers\LamaranController;
 use App\Http\Controllers\LogMagangController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/test', function () {
     return response()->json([
         'message' => 'API berhasil jalan'
     ]);
 });
 
-// Mahasiswa
-Route::apiResource('mahasiswa', MahasiswaController::class);
+// Mahasiswa (protected)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('mahasiswa', MahasiswaController::class);
+    Route::get('/mahasiswa-profile', [MahasiswaController::class, 'profile']);
+});
 
 // Lowongan
 Route::apiResource('lowongan', LowonganController::class);
