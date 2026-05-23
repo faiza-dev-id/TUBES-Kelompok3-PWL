@@ -6,26 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('activity_logs', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedBigInteger('student_id');
-        $table->date('activity_date');
-        $table->text('description');
-        $table->text('notes')->nullable();
-        $table->timestamps();
+        Schema::create('log_magang', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('mahasiswa_id');
+            $table->unsignedBigInteger('lowongan_id');
+            $table->date('tanggal');
+            $table->text('kegiatan');
+            $table->text('keterangan')->nullable();
+            $table->timestamps();
+
+            $table->foreign('mahasiswa_id')->references('id')->on('mahasiswa')->onDelete('cascade');
+            $table->foreign('lowongan_id')->references('id')->on('lowongan')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('activity_logs');
+        Schema::dropIfExists('log_magang');
     }
 };

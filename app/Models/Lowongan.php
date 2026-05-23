@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Mitra;
+use App\Models\Lamaran;
 
 class Lowongan extends Model
 {
     protected $table = 'lowongan';
-    
+
     protected $fillable = [
         'mitra_id',
         'judul_lowongan',
@@ -17,9 +19,9 @@ class Lowongan extends Model
     ];
 
     public function mitra()
-    {
-        return $this->belongsTo(Mitra::class);
-    }
+{
+    return $this->belongsTo(Mitra::class);
+}
 
     public function lamaran()
     {
