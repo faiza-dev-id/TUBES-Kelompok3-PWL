@@ -56,7 +56,7 @@ class Lamaran extends Model
 
     public function getLabelStatusAttribute(): string
     {
-        return match ($tihs->status) {
+        return match ($this->status) {
             self::STATUS_PENDING    =>  '⏳ Pending - Lamaran kamu sedang menunggu ditinjau oleh mitra.',
             self::STATUS_DITERIMA   =>  '✅ Diterima - Selamat! Lamaran kamu telah diterima oleh mitra.',
             self::STATUS_DITOLAK    =>  '❌ Ditolak - Maaf, lamaran kamu belum berhasil kali ini. Tetap semangat!',
