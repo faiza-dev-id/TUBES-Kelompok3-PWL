@@ -12,18 +12,14 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // ── Riwayat lamaran milik user yang login ──────────────────────────
         $lamarans = Lamaran::where('mahasiswa_id', $user->id)
-            ->with('lowongan')
+            ->with('lowongan.mitra')
             ->latest()
             ->get();
 
-        // Cek apakah mahasiswa sedang aktif magang
-        // (ada lamaran dengan status 'diterima')
         $lamaranDiterima = $lamarans->firstWhere('status', Lamaran::STATUS_DITERIMA);
         $sedangMagang    = $lamaranDiterima !== null;
 
-        // ── Lowongan terbaru (hanya tampil jika BELUM magang aktif) ────────
         $lowonganTerbaru = collect();
         if (! $sedangMagang) {
             $lowonganTerbaru = Lowongan::where('status', 'aktif')
@@ -33,7 +29,6 @@ class DashboardController extends Controller
                 ->get();
         }
 
-        // ── Statistik ringkas ──────────────────────────────────────────────
         $stats = [
             'total_lamaran' => $lamarans->count(),
             'pending'       => $lamarans->where('status', Lamaran::STATUS_PENDING)->count(),
@@ -41,13 +36,22 @@ class DashboardController extends Controller
             'ditolak'       => $lamarans->where('status', Lamaran::STATUS_DITOLAK)->count(),
         ];
 
+        $mingguBerjalan = 1;
+        $totalMinggu    = 16;
+        if ($sedangMagang && $lamaranDiterima) {
+            $mulai = $lamaranDiterima->diproses_pada ?? $lamaranDiterima->created_at;
+            $mingguBerjalan = min(16, max(1, (int) floor(\Carbon\Carbon::parse($mulai)->diffInWeeks(now())) + 1));
+        }
+
         return view('dashboard', compact(
             'user',
             'sedangMagang',
             'lamaranDiterima',
             'lamarans',
             'lowonganTerbaru',
-            'stats'
+            'stats',
+            'mingguBerjalan',
+            'totalMinggu'
         ));
     }
 }
