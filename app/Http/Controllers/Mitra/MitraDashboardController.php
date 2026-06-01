@@ -20,19 +20,19 @@ class MitraDashboardController extends Controller
         // ── Statistik utama ───────────────────────────────────────────
         $lowonganAktif       = $mitra->lowongans()->where('status', 'aktif')->count();
         $totalPelamar        = $mitra->lamarans()->count();
-        $mahasiswaAktif      = $mitra->lamarans()->where('status', 'diterima')->count();
+        $mahasiswaAktif = $mitra->lamarans()->where('lamaran.status', 'diterima')->count();
         $penilaianBelumSelesai = Penilaian::whereHas('lamaran', function ($q) use ($mitra) {
             $q->whereHas('lowongan', fn($q2) => $q2->where('mitra_id', $mitra->id))
               ->where('status', 'diterima');
         })->whereNull('nilai_akhir')->count();
 
         // ── Lamaran pending (perlu ditindak) ──────────────────────────
-        $lamaranPending = Lamaran::whereHas('lowongan', fn($q) => $q->where('mitra_id', $mitra->id))
-            ->where('status', 'pending')
-            ->with('mahasiswa', 'lowongan')
-            ->latest()
-            ->take(6)
-            ->get();
+       $lamaranPending = Lamaran::whereHas('lowongan', fn($q) => $q->where('mitra_id', $mitra->id))
+    ->where('lamaran.status', 'pending')  // ← tambah prefix tabel
+    ->with('mahasiswa', 'lowongan')
+    ->latest()
+    ->take(6)
+    ->get();
 
         // ── Lowongan milik mitra ──────────────────────────────────────
         $lowongans = $mitra->lowongans()
@@ -52,10 +52,14 @@ class MitraDashboardController extends Controller
         ->get();
 
         // ── Trend: pelamar minggu ini vs minggu lalu ──────────────────
-        $pelamarMingguIni  = $mitra->lamarans()->where('created_at', '>=', now()->startOfWeek())->count();
-        $pelamarMingguLalu = $mitra->lamarans()
-            ->whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()])
-            ->count();
+        $pelamarMingguIni = $mitra->lamarans()
+    ->where('lamaran.created_at', '>=', now()->startOfWeek())->count();
+
+$pelamarMingguLalu = $mitra->lamarans()
+    ->whereBetween('lamaran.created_at', [
+        now()->subWeek()->startOfWeek(),
+        now()->subWeek()->endOfWeek()
+    ])->count();
 
         return view('mitra.dashboard', compact(
             'user', 'mitra',

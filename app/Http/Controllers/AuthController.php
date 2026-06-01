@@ -11,9 +11,8 @@ class AuthController extends Controller
 {
     public function showRegister()
     {
-        // Kalau sudah login, langsung ke dashboard — bukan ke '/'
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            return $this->redirectByRole(Auth::user()->role);
         }
         return view('auth.register');
     }
@@ -43,15 +42,13 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        // Redirect ke dashboard, bukan ke '/'
-        return redirect()->route('dashboard');
+        return $this->redirectByRole($user->role);
     }
 
     public function showLogin()
     {
-        // Kalau sudah login, langsung ke dashboard — bukan ke '/'
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            return $this->redirectByRole(Auth::user()->role);
         }
         return view('auth.login');
     }
@@ -69,8 +66,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            // Redirect ke dashboard, bukan ke '/'
-            return redirect()->route('dashboard');
+            return $this->redirectByRole(Auth::user()->role);
         }
 
         return back()->with('error', 'Email atau password salah.');
@@ -82,5 +78,14 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login');
+    }
+
+    private function redirectByRole(string $role)
+    {
+        return match($role) {
+            'mitra' => redirect()->route('mitra.dashboard'),
+            'admin' => redirect()->route('dashboard'), // ganti kalau sudah ada route admin
+            default => redirect()->route('dashboard'),
+        };
     }
 }
