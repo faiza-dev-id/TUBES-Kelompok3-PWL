@@ -10,11 +10,12 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function ($middleware) {
+    ->withMiddleware(function (Middleware $middleware) {
 
-    $middleware->alias([
-        'nocache' => \App\Http\Middleware\NoCache::class,
-    ]);
+        $middleware->alias([
+            'nocache' => \App\Http\Middleware\NoCache::class,
+            'mitra'   => \App\Http\Middleware\MitraAuth::class,
+        ]);
 
     })
     ->withExceptions(function (Exceptions $exceptions): void {
