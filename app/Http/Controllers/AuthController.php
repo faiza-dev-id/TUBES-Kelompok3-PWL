@@ -38,6 +38,7 @@ class AuthController extends Controller
             'name'     => $validated['name'],
             'email'    => $validated['email'],
             'password' => bcrypt($validated['password']),
+            'role'     => 'mahasiswa', // ✅ fix: set default role saat register
         ]);
 
         Auth::login($user);
@@ -80,11 +81,11 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    private function redirectByRole(string $role)
+    private function redirectByRole(?string $role) // ✅ fix: tambah ? agar null aman
     {
         return match($role) {
             'mitra' => redirect()->route('mitra.dashboard'),
-            'admin' => redirect()->route('dashboard'), // ganti kalau sudah ada route admin
+            'admin' => redirect()->route('dashboard'),
             default => redirect()->route('dashboard'),
         };
     }
