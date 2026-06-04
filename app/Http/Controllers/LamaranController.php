@@ -20,7 +20,7 @@ class LamaranController extends Controller
     {
         // Validasi input
         $request->validate([
-            'lowongan_id'         => 'required|exists:lowongans,id',
+            'lowongan_id'         => 'required|exists:lowongan,id',
             'cv_path'             => 'nullable|file|mimes:pdf|max:2048',
             'surat_lamaran_path'  => 'nullable|file|mimes:pdf|max:2048',
         ]);
@@ -102,7 +102,7 @@ class LamaranController extends Controller
                                return [
                                    'id'             => $lamaran->id,
                                    'lowongan'       => $lamaran->lowongan->judul ?? '-',
-                                   'mitra'          => $lamaran->lowongan->mitra->name ?? '-',
+                                   'mitra'          => $lamaran->lowongan->mitra->nama_perusahaan ?? '-',
                                    'status'         => $lamaran->status,
                                    'label_status'   => $lamaran->label_status,
                                    'catatan_mitra'  => $lamaran->catatan_mitra,

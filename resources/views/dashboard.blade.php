@@ -92,6 +92,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .icon-green{background:var(--green-dim);color:var(--green);}
 .icon-amber{background:var(--amber-dim);color:var(--amber);}
 .icon-purple{background:var(--primary-dim);color:var(--primary);}
+.icon-red{background:var(--red-dim);color:var(--red);}
 .stat-val{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;}
 .stat-lbl{font-size:12.5px;font-weight:600;color:var(--text-1);}
 .stat-sub{font-size:11px;color:var(--text-3);}
@@ -130,8 +131,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tl-date{font-size:10.5px;color:var(--text-3);font-family:'DM Mono',monospace;}
 
 .lowongan-list{display:flex;flex-direction:column;gap:10px;}
-.lowongan-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);transition:.15s;}
-.lowongan-item:hover{border-color:var(--primary);cursor:pointer;}
+.lowongan-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);transition:.15s;text-decoration:none;color:inherit;}
+.lowongan-item:hover{border-color:var(--primary);}
 .low-logo{width:36px;height:36px;border-radius:9px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text-2);flex-shrink:0;border:1px solid var(--border);}
 .low-body{flex:1;min-width:0;}
 .low-company{font-size:13px;font-weight:700;}
@@ -139,8 +140,17 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .low-tags{display:flex;gap:5px;margin-top:4px;}
 .low-tag{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--bg2);color:var(--text-3);font-weight:500;border:1px solid var(--border);}
 .low-right{text-align:right;flex-shrink:0;}
-.low-deadline{font-size:10px;color:var(--text-3);font-family:'DM Mono',monospace;}
 .low-slot{font-size:10.5px;color:var(--amber);font-weight:600;}
+
+/* Quick action cards saat magang aktif */
+.quick-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.qa-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;transition:.15s;}
+.qa-card:hover{border-color:var(--primary);box-shadow:0 2px 12px rgba(139,26,58,.08);}
+.qa-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qa-icon svg{width:20px;height:20px;}
+.qa-body{}
+.qa-title{font-size:13px;font-weight:700;margin-bottom:2px;}
+.qa-sub{font-size:11.5px;color:var(--text-3);}
 
 .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;text-align:center;color:var(--text-3);}
 .empty-state svg{width:40px;height:40px;margin-bottom:12px;opacity:.4;}
@@ -151,9 +161,21 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .magang-banner{background:linear-gradient(135deg,var(--green-dim),rgba(46,125,79,.05));border:1px solid rgba(46,125,79,.2);border-radius:var(--radius);padding:18px 22px;display:flex;align-items:center;gap:14px;}
 .magang-banner-icon{width:42px;height:42px;border-radius:11px;background:var(--green-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .magang-banner-icon svg{width:22px;height:22px;color:var(--green);}
-.magang-banner-body{}
 .magang-banner-title{font-size:13.5px;font-weight:700;color:var(--green);margin-bottom:3px;}
 .magang-banner-desc{font-size:12px;color:var(--text-2);}
+
+/* Progress summary bar saat magang aktif */
+.progress-summary{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;}
+.ps-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.ps-title{font-size:13.5px;font-weight:700;}
+.ps-sub{font-size:12px;color:var(--text-3);}
+.ps-weeks{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;}
+.ps-cell{height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;font-family:'DM Mono',monospace;}
+.wc-done{background:var(--primary);color:#fff;}
+.wc-now{background:var(--primary);color:#fff;outline:2px solid var(--primary);outline-offset:2px;}
+.wc-future{background:var(--bg3);color:var(--text-3);}
+.ps-labels{display:flex;justify-content:space-between;margin-top:6px;}
+.ps-lbl{font-size:9px;color:var(--text-3);}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .fade-up{animation:fadeUp .4s ease both;}
@@ -176,51 +198,53 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Dashboard
     </a>
-    <a href="#" class="nav-item">
+    <a href="{{ route('lowongan.browse') }}" class="nav-item">
       <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 13V6a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8"/><path d="M16 19h6m-3-3v6"/></svg>
       Lowongan Magang
     </a>
-    <a href="#" class="nav-item">
+    <a href="{{ route('lamaran.saya') }}" class="nav-item">
       <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       Lamaran Saya
     </a>
-    <a href="#" class="nav-item">
+    @if($sedangMagang)
+    <a href="{{ route('log-kegiatan.index') }}" class="nav-item">
       <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
       Log Kegiatan
     </a>
-    <a href="#" class="nav-item">
+    <a href="{{ route('laporan-kegiatan.index') }}" class="nav-item">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2"/><path d="M15 7h2a5 5 0 010 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Laporan Kegiatan
+    </a>
+    <a href="{{ route('penilaian.index') }}" class="nav-item">
       <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       Hasil Penilaian
     </a>
+    @endif
   </div>
   <div class="sidebar-foot">
+    @php $initials = strtoupper(substr($user->name, 0, 2)); @endphp
     <div class="user-chip">
-      {{-- Inisial nama user --}}
-      @php $initials = strtoupper(substr($user->name, 0, 2)); @endphp
       <div class="ava">{{ $initials }}</div>
       <div class="user-info">
         <div class="user-name">{{ $user->name }}</div>
         <div class="user-role">{{ $sedangMagang ? 'Mahasiswa Aktif Magang' : 'Mahasiswa' }}</div>
       </div>
     </div>
-    {{-- Tombol logout --}}
-    <form action="{{ route('logout') }}" method="POST">
+    <form method="POST" action="{{ route('logout') }}">
       @csrf
       <button type="submit" class="btn-logout">Keluar</button>
     </form>
   </div>
 </nav>
 
-{{-- ═══════════════════════════ MAIN CONTENT ═══════════════════════════ --}}
+{{-- ═══════════════════════════ MAIN ═══════════════════════════ --}}
 <div class="main">
   <div class="topbar">
     <div class="page-title">Dashboard Mahasiswa</div>
     <div class="topbar-right">
       <div class="btn-notif">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-        @if($stats['pending'] > 0)
-          <div class="notif-dot"></div>
-        @endif
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        @if(!$lamarans->isEmpty())<div class="notif-dot"></div>@endif
       </div>
     </div>
   </div>
@@ -230,119 +254,224 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     {{-- ── HERO CARD ── --}}
     <div class="hero fade-up">
       <div class="hero-ava">{{ $initials }}</div>
-      <div style="flex:1">
+      <div>
         <div class="hero-name">{{ $user->name }}</div>
-        <div class="hero-meta">
-          {{ $user->email }}
-          @if($sedangMagang && $lamaranDiterima->lowongan)
-            &nbsp;·&nbsp; {{ $lamaranDiterima->lowongan->judul ?? '' }}
-          @endif
-        </div>
+        <div class="hero-meta">{{ $user->email }}</div>
         <div class="htags">
-          @if($sedangMagang)
+          @if($sedangMagang && $statsMagang)
             <span class="htag htag-green">Sedang Magang</span>
-            @if($lamaranDiterima->lowongan && $lamaranDiterima->lowongan->mitra)
-              <span class="htag htag-blue">{{ $lamaranDiterima->lowongan->mitra->name }}</span>
-            @endif
-            <span class="htag htag-amber">Lamaran Diterima</span>
+            <span class="htag htag-blue">{{ $lamaranDiterima->lowongan->mitra->nama_perusahaan ?? 'Mitra' }}</span>
+            <span class="htag htag-amber">Minggu ke-{{ $statsMagang['minggu_berjalan'] }}</span>
           @else
-            <span class="htag htag-gray">Belum Magang</span>
-            @if($stats['pending'] > 0)
-              <span class="htag htag-amber">{{ $stats['pending'] }} Lamaran Pending</span>
-            @endif
+            <span class="htag htag-amber">Belum Magang</span>
+            <span class="htag htag-gray">Cari Lowongan</span>
           @endif
         </div>
       </div>
       <div class="hero-right">
-        <div class="hero-pct">{{ $stats['total_lamaran'] }}</div>
-        <div class="hero-sub">Total lamaran</div>
-        <div class="prog-wrap">
-          <div class="prog-bar">
-            @php
-              $pct = $stats['total_lamaran'] > 0
-                ? round(($stats['diterima'] / $stats['total_lamaran']) * 100)
-                : 0;
-            @endphp
-            <div class="prog-fill" style="width:{{ $pct }}%"></div>
+        @if($sedangMagang && $statsMagang)
+          {{-- Progress magang saat aktif --}}
+          <div class="hero-pct">{{ $statsMagang['progress_pct'] }}<span style="font-size:16px;color:rgba(255,255,255,.5)">%</span></div>
+          <div class="hero-sub">Progress magang</div>
+          <div class="prog-wrap">
+            <div class="prog-bar">
+              <div class="prog-fill" style="width:{{ $statsMagang['progress_pct'] }}%"></div>
+            </div>
+            <div class="prog-note">{{ $statsMagang['minggu_berjalan'] }} / {{ $statsMagang['total_minggu'] }} minggu selesai</div>
           </div>
-          <div class="prog-note">{{ $pct }}% diterima</div>
-        </div>
+        @else
+          {{-- Total lamaran saat belum magang --}}
+          <div class="hero-pct">{{ $stats['total_lamaran'] }}</div>
+          <div class="hero-sub">Total lamaran</div>
+          <div class="prog-wrap">
+            <div class="prog-bar">
+              @php
+                $pct = $stats['total_lamaran'] > 0
+                  ? round(($stats['diterima'] / $stats['total_lamaran']) * 100)
+                  : 0;
+              @endphp
+              <div class="prog-fill" style="width:{{ $pct }}%"></div>
+            </div>
+            <div class="prog-note">{{ $pct }}% diterima</div>
+          </div>
+        @endif
       </div>
     </div>
 
-    {{-- ── STATISTIK LAMARAN (4 kotak) ── --}}
-    <div class="g4 fade-up" style="animation-delay:.1s">
-      <div class="stat-c">
-        <div class="stat-icon icon-blue">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2"/><path d="M15 7h2a5 5 0 010 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        </div>
-        <div class="stat-val">{{ $stats['total_lamaran'] }}</div>
-        <div class="stat-lbl">Total Lamaran</div>
-        <div class="stat-sub">Semua waktu</div>
-      </div>
-      <div class="stat-c">
-        <div class="stat-icon icon-amber">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <div class="stat-val">{{ $stats['pending'] }}</div>
-        <div class="stat-lbl">Menunggu</div>
-        <div class="stat-sub">Belum diproses</div>
-      </div>
-      <div class="stat-c">
-        <div class="stat-icon icon-green">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <div class="stat-val">{{ $stats['diterima'] }}</div>
-        <div class="stat-lbl">Diterima</div>
-        <div class="stat-sub">Lamaran berhasil</div>
-      </div>
-      <div class="stat-c">
-        <div class="stat-icon icon-purple">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </div>
-        <div class="stat-val">{{ $stats['ditolak'] }}</div>
-        <div class="stat-lbl">Ditolak</div>
-        <div class="stat-sub">Lamaran gagal</div>
-      </div>
-    </div>
 
-    {{-- ── CONDITIONAL: Banner magang aktif ATAU Lowongan Terbaru ── --}}
     @if($sedangMagang)
-      {{-- Jika sudah magang: tampilkan banner status + sembunyikan lowongan --}}
-      <div class="magang-banner fade-up" style="animation-delay:.2s">
-        <div class="magang-banner-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      {{-- ══ DASHBOARD SAAT MAGANG AKTIF ══ --}}
+
+      {{-- ── 4 STAT MAGANG ── --}}
+      <div class="g4 fade-up" style="animation-delay:.1s">
+        <div class="stat-c">
+          <div class="stat-icon icon-green">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="stat-val">{{ $statsMagang['nilai_sementara'] ?? '—' }}</div>
+          <div class="stat-lbl">Nilai Sementara</div>
+          <div class="stat-sub">Rata-rata semua komponen</div>
         </div>
-        <div class="magang-banner-body">
-          <div class="magang-banner-title">Kamu sedang aktif menjalani magang!</div>
-          <div class="magang-banner-desc">
-            Lowongan baru tidak ditampilkan selama kamu masih dalam status magang aktif.
-            @if($lamaranDiterima && $lamaranDiterima->lowongan)
-              Tempat magang: <strong>{{ $lamaranDiterima->lowongan->judul }}</strong>
-              @if($lamaranDiterima->lowongan->mitra)
-                di <strong>{{ $lamaranDiterima->lowongan->mitra->name }}</strong>.
-              @endif
+        <div class="stat-c">
+          <div class="stat-icon icon-blue">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="stat-val">{{ $statsMagang['log_minggu_ini'] }}</div>
+          <div class="stat-lbl">Log Minggu Ini</div>
+          <div class="stat-sub">Dari 5 hari kerja</div>
+        </div>
+        <div class="stat-c">
+          <div class="stat-icon icon-amber">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="stat-val">{{ $statsMagang['laporan_terkumpul'] }}/{{ $statsMagang['total_dok_wajib'] }}</div>
+          <div class="stat-lbl">Laporan Terkumpul</div>
+          <div class="stat-sub">{{ $statsMagang['total_dok_wajib'] - $statsMagang['laporan_terkumpul'] }} laporan belum dikumpulkan</div>
+        </div>
+        <div class="stat-c">
+          <div class="stat-icon icon-purple">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="stat-val">{{ $statsMagang['hari_tersisa'] }}</div>
+          <div class="stat-lbl">Hari Tersisa</div>
+          <div class="stat-sub">Berakhir {{ $statsMagang['deadline']->format('d M Y') }}</div>
+        </div>
+      </div>
+
+      {{-- ── PROGRESS MINGGU ── --}}
+      <div class="progress-summary fade-up" style="animation-delay:.15s">
+        <div class="ps-head">
+          <div class="ps-title">Progress Magang</div>
+          <div class="ps-sub">
+            Minggu ke-<strong>{{ $statsMagang['minggu_berjalan'] }}</strong>
+            dari <strong>{{ $statsMagang['total_minggu'] }}</strong> minggu
+            &nbsp;·&nbsp; <strong>{{ $statsMagang['progress_pct'] }}%</strong> selesai
+          </div>
+        </div>
+        <div class="ps-weeks">
+          @for($w = 1; $w <= $statsMagang['total_minggu']; $w++)
+            @if($w < $statsMagang['minggu_berjalan'])
+              <div class="ps-cell wc-done">{{ $w }}</div>
+            @elseif($w == $statsMagang['minggu_berjalan'])
+              <div class="ps-cell wc-now">{{ $w }}</div>
+            @else
+              <div class="ps-cell wc-future">{{ $w }}</div>
             @endif
+          @endfor
+        </div>
+        <div class="ps-labels">
+          <span class="ps-lbl">{{ $statsMagang['mulai']->format('d M Y') }}</span>
+          <span class="ps-lbl">Sekarang →</span>
+          <span class="ps-lbl">{{ $statsMagang['deadline']->format('d M Y') }}</span>
+        </div>
+      </div>
+
+      {{-- ── LOG TERBARU + TIMELINE ── --}}
+      <div class="g2 fade-up" style="animation-delay:.2s">
+        <div class="card">
+          <div class="card-hd">
+            <div class="card-title">Log Kegiatan Terbaru</div>
+            <a href="{{ route('log-kegiatan.index') }}" class="card-link">Lihat semua →</a>
+          </div>
+          @if($logTerbaru->isEmpty())
+            <div class="empty-state">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <p>Belum ada log kegiatan.<br>Mulai catat aktivitas harianmu.</p>
+            </div>
+          @else
+            <div style="display:flex;flex-direction:column;">
+              @foreach($logTerbaru as $log)
+                <div style="display:flex;gap:14px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);">
+                  <div style="width:36px;text-align:center;flex-shrink:0;">
+                    <div style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;">{{ $log->tanggal->format('d') }}</div>
+                    <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;">{{ $log->tanggal->format('M') }}</div>
+                  </div>
+                  @php
+                    $dotColor = match($log->kategori ?? '') {
+                      'Meeting'  => '#8b1a3a',
+                      'Coding'   => '#1a5fa0',
+                      'Desain'   => '#2e7d4f',
+                      'Testing'  => '#c07020',
+                      default    => '#a07080',
+                    };
+                  @endphp
+                  <div style="padding-top:5px;flex-shrink:0;">
+                    <div style="width:9px;height:9px;border-radius:50%;background:{{ $dotColor }};"></div>
+                  </div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $log->judul_kegiatan }}</div>
+                    <div style="font-size:11.5px;color:var(--text-3);margin-top:2px;">
+                      {{ substr($log->jam_mulai,0,5) }}–{{ substr($log->jam_selesai,0,5) }}
+                      @if($log->lokasi) · {{ $log->lokasi }} @endif
+                    </div>
+                  </div>
+                </div>
+              @endforeach
+            </div>
+          @endif
+        </div>
+
+        <div class="card">
+          <div class="card-hd"><div class="card-title">Timeline Magang</div></div>
+          <div class="tl">
+            <div class="tl-item">
+              <div class="tl-g"><div class="tl-dot dot-done"></div><div class="tl-line"></div></div>
+              <div class="tl-body">
+                <div class="tl-label">Pendaftaran & Seleksi</div>
+                <div class="tl-desc">Proses aplikasi dan penerimaan</div>
+                <div class="tl-date">{{ $lamaranDiterima->created_at->format('d M Y') }}</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-g"><div class="tl-dot dot-done"></div><div class="tl-line"></div></div>
+              <div class="tl-body">
+                <div class="tl-label">Lamaran Diterima</div>
+                <div class="tl-desc">Mitra menerima lamaranmu</div>
+                <div class="tl-date">{{ $lamaranDiterima->diproses_pada ? $lamaranDiterima->diproses_pada->format('d M Y') : '-' }}</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-g"><div class="tl-dot dot-now"></div><div class="tl-line"></div></div>
+              <div class="tl-body">
+                <div class="tl-label lbl-active">Pelaksanaan Magang</div>
+                <div class="tl-desc">Minggu ke-{{ $statsMagang['minggu_berjalan'] }} · sedang berjalan</div>
+                <div class="tl-date">{{ now()->format('d M Y') }}</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-g"><div class="tl-dot dot-future"></div><div class="tl-line"></div></div>
+              <div class="tl-body">
+                <div class="tl-label lbl-muted">Penilaian Akhir</div>
+                <div class="tl-desc">Evaluasi oleh pembimbing lapangan</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-g"><div class="tl-dot dot-future"></div></div>
+              <div class="tl-body">
+                <div class="tl-label lbl-muted">Pengumpulan Laporan Akhir</div>
+                <div class="tl-desc">{{ $statsMagang['deadline']->format('d M Y') }}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
     @else
-      {{-- Jika belum magang: tampilkan lowongan terbaru --}}
+      {{-- ── BELUM MAGANG: Lowongan Terbaru + Riwayat Lamaran ── --}}
       <div class="g2 fade-up" style="animation-delay:.2s">
         <div class="card">
           <div class="card-hd">
             <div class="card-title">Lowongan Terbaru</div>
-            <a href="#" class="card-link">Lihat semua →</a>
+            <a href="{{ route('lowongan.browse') }}" class="card-link">Lihat semua →</a>
           </div>
           <div class="lowongan-list">
             @forelse($lowonganTerbaru as $lowongan)
-              <div class="lowongan-item">
+              <a href="{{ route('lowongan.browse') }}" class="lowongan-item">
                 <div class="low-logo">
-                  {{ strtoupper(substr($lowongan->mitra->name ?? 'LW', 0, 2)) }}
+                  {{ strtoupper(substr($lowongan->mitra->nama_perusahaan ?? $lowongan->mitra->name ?? 'LW', 0, 2)) }}
                 </div>
                 <div class="low-body">
-                  <div class="low-company">{{ $lowongan->mitra->name ?? 'Mitra' }}</div>
+                  <div class="low-company">{{ $lowongan->mitra->nama_perusahaan ?? $lowongan->mitra->name ?? 'Mitra' }}</div>
                   <div class="low-pos">{{ $lowongan->judul_lowongan }}</div>
                   <div class="low-tags">
                     <span class="low-tag">{{ ucfirst($lowongan->status) }}</span>
@@ -354,7 +483,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
                 <div class="low-right">
                   <div class="low-slot">Tersedia</div>
                 </div>
-              </div>
+              </a>
             @empty
               <div class="empty-state">
                 <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 13V6a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8"/><path d="M16 19h6m-3-3v6"/></svg>
@@ -364,11 +493,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           </div>
         </div>
 
-        {{-- Riwayat Lamaran (kolom kanan, tampil saat belum magang) --}}
         <div class="card">
           <div class="card-hd">
             <div class="card-title">Riwayat Lamaran</div>
-            <a href="#" class="card-link">Lihat semua →</a>
+            <a href="{{ route('lamaran.saya') }}" class="card-link">Lihat semua →</a>
           </div>
           @if($lamarans->isEmpty())
             <div class="empty-state">
@@ -386,8 +514,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
               </thead>
               <tbody>
                 @foreach($lamarans->take(4) as $lamaran)
-                  <tr class="lamaran-row">
-                    <td>{{ $lamaran->lowongan->judul_lowongan ?? '-' }}</td>
+                  <tr>
+                    <td style="font-weight:600">{{ $lamaran->lowongan->judul_lowongan ?? '-' }}</td>
                     <td>
                       @if($lamaran->status === 'diterima')
                         <span class="pill p-ok">✓ Diterima</span>
@@ -404,144 +532,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
                 @endforeach
               </tbody>
             </table>
-          @endif
-        </div>
-      </div>
-    @endif
-
-    {{-- ── Jika sedang magang: tampilkan riwayat lamaran full width ── --}}
-    @if($sedangMagang)
-      <div class="card fade-up" style="animation-delay:.25s">
-        <div class="card-hd">
-          <div class="card-title">Riwayat Lamaran</div>
-          <a href="#" class="card-link">Lihat semua →</a>
-        </div>
-        @if($lamarans->isEmpty())
-          <div class="empty-state">
-            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <p>Belum ada lamaran</p>
-          </div>
-        @else
-          <table class="tbl">
-            <thead>
-              <tr>
-                <th>Posisi / Lowongan</th>
-                <th>Mitra</th>
-                <th>Status</th>
-                <th>Tanggal Lamar</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($lamarans as $lamaran)
-                <tr class="lamaran-row">
-                  <td>{{ $lamaran->lowongan->judul_lowongan ?? '-' }}</td>
-                  <td style="color:var(--text-2)">{{ $lamaran->lowongan->mitra->name ?? '-' }}</td>
-                  <td>
-                    @if($lamaran->status === 'diterima')
-                      <span class="pill p-ok">✓ Diterima</span>
-                    @elseif($lamaran->status === 'ditolak')
-                      <span class="pill p-no">✗ Ditolak</span>
-                    @else
-                      <span class="pill p-pend">⏳ Pending</span>
-                    @endif
-                  </td>
-                  <td style="color:var(--text-3);font-family:'DM Mono',monospace;font-size:11px;">
-                    {{ $lamaran->created_at->format('d M Y') }}
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
-        @endif
-      </div>
-    @endif
-
-    {{-- ── Timeline Magang (tampil saat sudah magang aktif) ── --}}
-    @if($sedangMagang)
-      <div class="g2 fade-up" style="animation-delay:.3s">
-        <div class="card">
-          <div class="card-hd"><div class="card-title">Timeline Magang</div></div>
-          <div class="tl">
-            <div class="tl-item">
-              <div class="tl-g"><div class="tl-dot dot-done"></div><div class="tl-line"></div></div>
-              <div class="tl-body">
-                <div class="tl-label">Pendaftaran & seleksi</div>
-                <div class="tl-desc">Proses aplikasi dan penerimaan</div>
-                <div class="tl-date">{{ $lamaranDiterima->created_at->format('M Y') }}</div>
-              </div>
-            </div>
-            <div class="tl-item">
-              <div class="tl-g"><div class="tl-dot dot-done"></div><div class="tl-line"></div></div>
-              <div class="tl-body">
-                <div class="tl-label">Lamaran Diterima</div>
-                <div class="tl-desc">Mitra menerima lamaran kamu</div>
-                <div class="tl-date">{{ $lamaranDiterima->diproses_pada ? $lamaranDiterima->diproses_pada->format('d M Y') : '-' }}</div>
-              </div>
-            </div>
-            <div class="tl-item">
-              <div class="tl-g"><div class="tl-dot dot-now"></div><div class="tl-line"></div></div>
-              <div class="tl-body">
-                <div class="tl-label lbl-active">Pelaksanaan Magang</div>
-                <div class="tl-desc">Sedang berjalan</div>
-                <div class="tl-date">{{ now()->format('d M Y') }} · sekarang</div>
-              </div>
-            </div>
-            <div class="tl-item">
-              <div class="tl-g"><div class="tl-dot dot-future"></div><div class="tl-line"></div></div>
-              <div class="tl-body">
-                <div class="tl-label lbl-muted">Penilaian Akhir</div>
-                <div class="tl-desc">Evaluasi oleh pembimbing lapangan</div>
-              </div>
-            </div>
-            <div class="tl-item">
-              <div class="tl-g"><div class="tl-dot dot-future"></div></div>
-              <div class="tl-body">
-                <div class="tl-label lbl-muted">Pengumpulan Laporan</div>
-                <div class="tl-desc">Laporan akhir & presentasi</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-hd"><div class="card-title">Informasi Magang</div></div>
-          @if($lamaranDiterima && $lamaranDiterima->lowongan)
-            <table class="tbl">
-              <tbody>
-                <tr>
-                  <td style="color:var(--text-3);width:40%">Posisi</td>
-                  <td><strong>{{ $lamaranDiterima->lowongan->judul_lowongan }}</strong></td>
-                </tr>
-                <tr>
-                  <td style="color:var(--text-3)">Mitra</td>
-                  <td>{{ $lamaranDiterima->lowongan->mitra->name ?? '-' }}</td>
-                </tr>
-                <tr>
-                  <td style="color:var(--text-3)">Durasi</td>
-                  <td>{{ $lamaranDiterima->lowongan->durasi ?? '-' }}</td>
-                </tr>
-                <tr>
-                  <td style="color:var(--text-3)">Status Lamaran</td>
-                  <td><span class="pill p-ok">✓ Diterima</span></td>
-                </tr>
-                <tr>
-                  <td style="color:var(--text-3)">Diproses</td>
-                  <td style="font-family:'DM Mono',monospace;font-size:11px;">
-                    {{ $lamaranDiterima->diproses_pada ? $lamaranDiterima->diproses_pada->format('d M Y') : '-' }}
-                  </td>
-                </tr>
-                @if($lamaranDiterima->catatan_mitra)
-                  <tr>
-                    <td style="color:var(--text-3)">Catatan Mitra</td>
-                    <td style="font-size:12px;color:var(--text-2)">{{ $lamaranDiterima->catatan_mitra }}</td>
-                  </tr>
-                @endif
-              </tbody>
-            </table>
-          @else
-            <div class="empty-state">
-              <p>Data magang tidak tersedia</p>
-            </div>
           @endif
         </div>
       </div>

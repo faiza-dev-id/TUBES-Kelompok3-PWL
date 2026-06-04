@@ -25,9 +25,9 @@ class Lamaran extends Model
         'diproses_pada' => 'datetime',
     ];
 
-    const STATUS_PENDING = 'pending';
+    const STATUS_PENDING  = 'pending';
     const STATUS_DITERIMA = 'diterima';
-    const STATUS_DITOLAK = 'ditolak';
+    const STATUS_DITOLAK  = 'ditolak';
 
     public function mahasiswa()
     {
@@ -39,28 +39,18 @@ class Lamaran extends Model
         return $this->belongsTo(Lowongan::class, 'lowongan_id');
     }
 
-    public function scopePending($query)
+    public function logKegiatan()
     {
-        return $query->where('status', self::STATUS_PENDING);
+        return $this->hasMany(LogKegiatan::class, 'lamaran_id');
     }
 
-    public function scopeDiterima($query)
+    public function laporanKegiatan()
     {
-        return $query->where('status', self::STATUS_DITERIMA);
+        return $this->hasMany(LaporanKegiatan::class, 'lamaran_id');
     }
 
-    public function scopeDitolak($query)
+    public function penilaian()
     {
-        return $query->where('status', self::STATUS_DITOLAK);
-    }
-
-    public function getLabelStatusAttribute(): string
-    {
-        return match ($this->status) {
-            self::STATUS_PENDING    =>  '⏳ Pending - Lamaran kamu sedang menunggu ditinjau oleh mitra.',
-            self::STATUS_DITERIMA   =>  '✅ Diterima - Selamat! Lamaran kamu telah diterima oleh mitra.',
-            self::STATUS_DITOLAK    =>  '❌ Ditolak - Maaf, lamaran kamu belum berhasil kali ini. Tetap semangat!',
-            default                 =>  'Tidak Diketahui',
-        };
+        return $this->hasMany(Penilaian::class, 'lamaran_id');
     }
 }
