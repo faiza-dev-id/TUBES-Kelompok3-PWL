@@ -11,25 +11,14 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-<<<<<<< HEAD
-    ->withMiddleware(function (Middleware $middleware): void {
-
-    $middleware->alias([
-        'nocache' => \App\Http\Middleware\NoCache::class,
-        'mitra'   => \App\Http\Middleware\MitraAuth::class,
-        'admin'   => \App\Http\Middleware\AdminAuth::class,
-        'kaprodi' => \App\Http\Middleware\KaprodiAuth::class,
-        'role'    => \App\Http\Middleware\RoleMiddleware::class,
-    ]);
-
-})
-
-=======
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'nocache' => \App\Http\Middleware\NoCache::class,
+            'mitra'   => \App\Http\Middleware\MitraAuth::class,
+            'admin'   => \App\Http\Middleware\AdminAuth::class,
+            'kaprodi' => \App\Http\Middleware\KaprodiAuth::class,
+            'role'    => \App\Http\Middleware\RoleMiddleware::class,
         ]);
->>>>>>> origin/feature-log-magang
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
