@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     const ROLE_MAHASISWA = 'mahasiswa';
     const ROLE_MITRA     = 'mitra';
@@ -70,7 +71,6 @@ class User extends Authenticatable
         return $this->hasOne(Mahasiswa::class, 'user_id');
     }
 
-    // ✅ Tambahan: relasi lamaran langsung dari users.id ke lamaran.mahasiswa_id
     public function lamaran()
     {
         return $this->hasMany(Lamaran::class, 'mahasiswa_id');
