@@ -12,7 +12,6 @@ use App\Models\LaporanKegiatan;
 
 class KaprodiMahasiswaController extends Controller
 {
-    /** Daftar semua mahasiswa (bisa filter: sedang magang / semua) */
     public function index(Request $request)
     {
         $query = User::where('role', 'mahasiswa')->with('mahasiswa');
@@ -23,13 +22,10 @@ class KaprodiMahasiswaController extends Controller
                 ->orWhere('email', 'like', "%$q%"));
         }
 
+        // ✅ Fix: langsung whereHas ke lamaran pakai mahasiswa_id = users.id
         if ($request->filter === 'magang') {
-            $query->whereHas('mahasiswa', fn($q) =>
-                $q->whereHas('user', fn($q2) =>
-                    $q2->whereHas('lamaran', fn($q3) =>
-                        $q3->where('status', 'diterima')
-                    )
-                )
+            $query->whereHas('lamaran', fn($q) =>
+                $q->where('status', 'diterima')
             );
         }
 
@@ -38,7 +34,6 @@ class KaprodiMahasiswaController extends Controller
         return view('kaprodi.mahasiswa.index', compact('mahasiswas'));
     }
 
-    /** Detail progress mahasiswa tertentu */
     public function show(User $user)
     {
         abort_if($user->role !== 'mahasiswa', 404);
@@ -68,7 +63,6 @@ class KaprodiMahasiswaController extends Controller
         ));
     }
 
-    /** Rekap nilai semua mahasiswa */
     public function rekapNilai(Request $request)
     {
         $query = Penilaian::with(['mahasiswa', 'lamaran.lowongan.mitra', 'penilai']);
