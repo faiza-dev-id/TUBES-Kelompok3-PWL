@@ -11,12 +11,14 @@ class Mahasiswa extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'nim', 'jurusan', 'fakultas', 'semester', 'no_hp', 'foto_profil'];
+    protected $table = 'mahasiswa';
+
+    protected $fillable = [
         'user_id',
         'nim',
         'jurusan',
-        'semester',
         'fakultas',
+        'semester',
         'no_hp',
         'foto_profil'
     ];

@@ -35,21 +35,25 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 Route::middleware(['auth', 'nocache'])->group(function () {
 
+    // Dashboard
+    Route::get('/dashboard', [MahasiswaController::class, 'dashboard'])
+        ->name('dashboard');
+
+    // Profil
     Route::get('/profil', [MahasiswaController::class, 'profile'])
         ->name('mahasiswa.profile');
+    Route::put('/profil', [MahasiswaController::class, 'updateProfile'])
+        ->name('mahasiswa.updateProfile');
 
+    // CRUD Mahasiswa
     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])
         ->name('mahasiswa.index');
-
     Route::post('/mahasiswa', [MahasiswaController::class, 'store'])
         ->name('mahasiswa.store');
-
     Route::get('/mahasiswa/{id}', [MahasiswaController::class, 'show'])
         ->name('mahasiswa.show');
-
     Route::put('/mahasiswa/{id}', [MahasiswaController::class, 'update'])
         ->name('mahasiswa.update');
-
     Route::delete('/mahasiswa/{id}', [MahasiswaController::class, 'destroy'])
         ->name('mahasiswa.destroy');
 });

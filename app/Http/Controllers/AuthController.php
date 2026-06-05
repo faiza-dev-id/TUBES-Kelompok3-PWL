@@ -68,8 +68,8 @@ class AuthController extends Controller
         // 3. Login otomatis
         Auth::login($user);
 
-        return redirect()->route('dashboard')
-            ->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name . '.');
+        return redirect()->route('mahasiswa.index')
+        ->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name . '.');
     }
 
     // ─────────────────────────────────────────────
@@ -89,7 +89,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('mahasiswa.profile'));
         }
 
         return back()->withErrors([

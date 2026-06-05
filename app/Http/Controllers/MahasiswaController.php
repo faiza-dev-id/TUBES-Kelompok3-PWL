@@ -62,6 +62,35 @@ class MahasiswaController extends Controller
         return response()->json(['message' => 'Mahasiswa berhasil dihapus']);
     }
 
+    // Dashboard mahasiswa (web)
+public function dashboard()
+{
+    $user      = Auth::user();
+    $mahasiswa = Mahasiswa::with('user')->where('user_id', $user->id)->first();
+
+    $sedangMagang    = false;
+    $statsMagang     = null;
+    $lamaranDiterima = null;
+    $logTerbaru      = collect();
+    $lamarans        = collect();
+    $lowonganTerbaru = collect();
+    $stats = [
+        'total_lamaran' => 0,
+        'diterima'      => 0,
+    ];
+
+    return view('dashboard', compact(
+        'user',
+        'mahasiswa',
+        'sedangMagang',
+        'statsMagang',
+        'lamaranDiterima',
+        'logTerbaru',
+        'lamarans',
+        'stats',
+        'lowonganTerbaru'
+    ));
+}
     // ─────────────────────────────────────────────
     // Tampilkan halaman edit profil (web)
     // ─────────────────────────────────────────────
