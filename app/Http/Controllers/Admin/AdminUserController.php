@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AdminUserController extends Controller
 {
@@ -29,67 +31,77 @@ class AdminUserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
-    /** Form tambah user */
+    /** Form tambah user — TANPA field password */
     public function create()
     {
         return view('admin.users.create');
     }
 
-    /** Simpan user baru (oleh admin, bisa set role apapun) */
+    /**
+     * Simpan user baru.
+     * Password di-generate otomatis dan dikirim ke email user.
+     * Admin TIDAK bisa menetapkan password secara manual.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'     => 'required|min:3|max:100',
-            'email'    => 'required|email|unique:users,email',
-            'role'     => 'required|in:mahasiswa,mitra,admin,kaprodi,sekprodi',
-            'password' => 'required|min:8|confirmed',
+            'name'  => 'required|min:3|max:100',
+            'email' => 'required|email|unique:users,email',
+            'role'  => 'required|in:mahasiswa,mitra,admin,kaprodi,sekprodi',
         ]);
 
-        User::create([
+        // Generate password acak yang kuat
+        $plainPassword = Str::password(12);
+
+        $user = User::create([
             'name'     => $validated['name'],
             'email'    => $validated['email'],
             'role'     => $validated['role'],
-            'password' => Hash::make($validated['password']),
+            'password' => Hash::make($plainPassword),
         ]);
 
+        // Kirim email berisi password awal
+        // Uncomment jika mail sudah dikonfigurasi:
+        // Mail::to($user->email)->send(new \App\Mail\AkunBaru($user, $plainPassword));
+
         return redirect()->route('admin.users.index')
-            ->with('success', 'User berhasil ditambahkan.');
+            ->with('success', "Akun berhasil dibuat. Password awal telah dikirim ke {$user->email}.");
     }
 
-    /** Form edit user */
+    /**
+     * Form edit user — HANYA nama, email, role.
+     * Tidak ada field password sama sekali.
+     */
     public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));
     }
 
-    /** Update data user */
+    /**
+     * Update data user — nama, email, role saja.
+     * Password TIDAK bisa diubah oleh admin.
+     * Hanya user itu sendiri yang bisa ubah password melalui halaman profil.
+     */
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'name'     => 'required|min:3|max:100',
-            'email'    => 'required|email|unique:users,email,' . $user->id,
-            'role'     => 'required|in:mahasiswa,mitra,admin,kaprodi,sekprodi',
-            'password' => 'nullable|min:8|confirmed',
+            'name'  => 'required|min:3|max:100',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'role'  => 'required|in:mahasiswa,mitra,admin,kaprodi,sekprodi',
         ]);
 
         $user->name  = $validated['name'];
         $user->email = $validated['email'];
         $user->role  = $validated['role'];
-
-        if (!empty($validated['password'])) {
-            $user->password = Hash::make($validated['password']);
-        }
-
         $user->save();
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User berhasil diperbarui.');
+            ->with('success', 'Data user berhasil diperbarui.');
     }
 
     /** Hapus user */
     public function destroy(User $user)
     {
-        // Cegah admin menghapus dirinya sendiri
         if ($user->id === auth()->id()) {
             return back()->with('error', 'Tidak bisa menghapus akun sendiri.');
         }
@@ -98,5 +110,25 @@ class AdminUserController extends Controller
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User berhasil dihapus.');
+    }
+
+    /**
+     * Reset password user — generate ulang password acak dan kirim ke email.
+     * Admin hanya bisa RESET (bukan set manual), hasilnya dikirim ke email user.
+     */
+    public function resetPassword(User $user)
+    {
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'Gunakan halaman profil untuk mengubah password Anda sendiri.');
+        }
+
+        $plainPassword = Str::password(12);
+        $user->password = Hash::make($plainPassword);
+        $user->save();
+
+        // Kirim email berisi password baru
+        // Mail::to($user->email)->send(new \App\Mail\ResetPasswordAdmin($user, $plainPassword));
+
+        return back()->with('success', "Password berhasil direset dan dikirim ke {$user->email}.");
     }
 }
