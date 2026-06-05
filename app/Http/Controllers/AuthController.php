@@ -15,7 +15,7 @@ class AuthController extends Controller
     // ─────────────────────────────────────────────
     public function showRegister()
     {
-        return view('auth.biodata');   // resources/views/auth/biodata.blade.php
+       return view('auth.register');
     }
 
     // ─────────────────────────────────────────────
