@@ -230,7 +230,7 @@ section{padding:96px 32px;}
 
 /* ── FOOTER ── */
 footer{background:var(--maroon-dark);padding:40px 32px;text-align:center;border-top:1px solid rgba(180,192,210,0.08);}
-.footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;}
 .footer-brand{display:flex;align-items:center;gap:10px;}
 .footer-logo{width:28px;height:28px;object-fit:contain;filter:brightness(0) invert(1);opacity:0.7;}
 .footer-sigma{height:22px;object-fit:contain;opacity:0.7;filter:brightness(0) invert(1);}
@@ -433,7 +433,7 @@ footer{background:var(--maroon-dark);padding:40px 32px;text-align:center;border-
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer style="text-align: center;">
   <div class="footer-inner">
     <div class="footer-brand">
 
