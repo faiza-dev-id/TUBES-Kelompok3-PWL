@@ -2,55 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Mahasiswa;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    // ─────────────────────────────────────────────
+    // Tampilkan form registrasi biodata mahasiswa
+    // ─────────────────────────────────────────────
     public function showRegister()
     {
-        if (Auth::check()) {
-            return $this->redirectByRole(Auth::user()->role);
-        }
-        return view('auth.register');
+        return view('auth.biodata');   // resources/views/auth/biodata.blade.php
     }
 
+    // ─────────────────────────────────────────────
+    // Proses registrasi + simpan biodata mahasiswa
+    // ─────────────────────────────────────────────
     public function register(Request $request)
     {
-        $validated = $request->validate([
-            'name'     => 'required|min:3|max:50',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
+        $request->validate([
+            // data akun
+            'name'                  => 'required|string|max:255',
+            'email'                 => 'required|email|unique:users,email',
+            'password'              => 'required|string|min:8|confirmed',
+
+            // biodata mahasiswa
+            'nim'                   => 'required|string|unique:mahasiswa,nim',
+            'jurusan'               => 'required|string|max:100',
+            'semester'              => 'required|integer|min:1|max:14',
         ], [
-            'name.required'      => 'Nama wajib diisi.',
-            'name.min'           => 'Nama minimal 3 karakter.',
-            'email.required'     => 'Email wajib diisi.',
-            'email.email'        => 'Format email tidak valid.',
-            'email.unique'       => 'Email sudah digunakan.',
-            'password.required'  => 'Password wajib diisi.',
-            'password.min'       => 'Password minimal 8 karakter.',
-            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            // pesan error dalam Bahasa Indonesia
+            'name.required'         => 'Nama lengkap wajib diisi.',
+            'email.required'        => 'Email wajib diisi.',
+            'email.unique'          => 'Email sudah terdaftar.',
+            'password.required'     => 'Password wajib diisi.',
+            'password.min'          => 'Password minimal 8 karakter.',
+            'password.confirmed'    => 'Konfirmasi password tidak cocok.',
+            'nim.required'          => 'NIM wajib diisi.',
+            'nim.unique'            => 'NIM sudah terdaftar.',
+            'jurusan.required'      => 'Jurusan wajib diisi.',
+            'semester.required'     => 'Semester wajib dipilih.',
+            'semester.min'          => 'Semester tidak valid.',
+            'semester.max'          => 'Semester tidak valid.',
         ]);
 
+        // 1. Buat akun User
         $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => bcrypt($validated['password']),
-            'role'     => 'mahasiswa', // registrasi publik selalu mahasiswa
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => 'mahasiswa',   // sesuaikan jika kolom role ada
         ]);
 
+        // 2. Simpan biodata Mahasiswa
+        Mahasiswa::create([
+            'user_id'  => $user->id,
+            'nim'      => $request->nim,
+            'jurusan'  => $request->jurusan,
+            'semester' => $request->semester,
+        ]);
+
+        // 3. Login otomatis
         Auth::login($user);
 
-        return $this->redirectByRole($user->role);
+        return redirect()->route('dashboard')
+            ->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name . '.');
     }
 
+    // ─────────────────────────────────────────────
+    // Login
+    // ─────────────────────────────────────────────
     public function showLogin()
     {
-        if (Auth::check()) {
-            return $this->redirectByRole(Auth::user()->role);
-        }
         return view('auth.login');
     }
 
@@ -59,36 +85,26 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email'    => 'required|email',
             'password' => 'required',
-        ], [
-            'email.required'    => 'Email wajib diisi.',
-            'email.email'       => 'Format email tidak valid.',
-            'password.required' => 'Password wajib diisi.',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return $this->redirectByRole(Auth::user()->role);
+            return redirect()->intended(route('dashboard'));
         }
 
-        return back()->with('error', 'Email atau password salah.');
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
     }
 
+    // ─────────────────────────────────────────────
+    // Logout
+    // ─────────────────────────────────────────────
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login');
-    }
-
-    private function redirectByRole(?string $role)
-    {
-        return match ($role) {
-            'mitra'    => redirect()->route('mitra.dashboard'),
-            'admin'    => redirect()->route('admin.dashboard'),
-            'kaprodi'  => redirect()->route('kaprodi.dashboard'),
-            'sekprodi' => redirect()->route('kaprodi.dashboard'),  // sekprodi pakai portal kaprodi
-            default    => redirect()->route('dashboard'),           // mahasiswa
-        };
     }
 }
