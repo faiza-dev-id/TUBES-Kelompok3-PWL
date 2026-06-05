@@ -23,8 +23,8 @@ Route::middleware('auth:sanctum')->group(function () {
 // Lowongan
 Route::apiResource('lowongan', LowonganController::class);
 
-// Lamaran
-Route::apiResource('lamaran', LamaranController::class);
+// Lamaran (API - disabled, gunakan web routes untuk akses lamaran)
+// Route::apiResource('lamaran', LamaranController::class);
 
 // Log Magang Mahasiswa
 Route::middleware(['auth:sanctum', 'role:mahasiswa'])->group(function () {

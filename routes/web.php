@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\LowonganBrowseController;
+use App\Http\Controllers\LamaranMahasiswaController;
+use App\Http\Controllers\LogKegiatanController;
+use App\Http\Controllers\LaporanKegiatanController;
+use App\Http\Controllers\PenilaianController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,12 +43,12 @@ Route::middleware(['auth', 'nocache'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [MahasiswaController::class, 'dashboard'])
         ->name('dashboard');
-        
+
     // Biodata (diisi setelah register)
-Route::get('/biodata', [MahasiswaController::class, 'showBiodata'])
-    ->name('mahasiswa.biodata');
-Route::post('/biodata', [MahasiswaController::class, 'storeBiodata'])
-    ->name('mahasiswa.storeBiodata');
+    Route::get('/biodata', [MahasiswaController::class, 'showBiodata'])
+        ->name('mahasiswa.biodata');
+    Route::post('/biodata', [MahasiswaController::class, 'storeBiodata'])
+        ->name('mahasiswa.storeBiodata');
 
     // Profil
     Route::get('/profil', [MahasiswaController::class, 'profile'])
@@ -62,4 +67,42 @@ Route::post('/biodata', [MahasiswaController::class, 'storeBiodata'])
         ->name('mahasiswa.update');
     Route::delete('/mahasiswa/{id}', [MahasiswaController::class, 'destroy'])
         ->name('mahasiswa.destroy');
+
+    // Lowongan Magang (Browse)
+    Route::get('/lowongan-magang', [LowonganBrowseController::class, 'index'])
+        ->name('lowongan.browse');
+    Route::get('/lowongan-magang/{id}', [LowonganBrowseController::class, 'show'])
+        ->name('lowongan.show');
+
+    // Lamaran Saya
+    Route::get('/lamaran-saya', [LamaranMahasiswaController::class, 'index'])
+        ->name('lamaran.index');
+    Route::post('/lamaran', [LamaranMahasiswaController::class, 'store'])
+        ->name('lamaran.store');
+    Route::delete('/lamaran/{id}', [LamaranMahasiswaController::class, 'destroy'])
+        ->name('lamaran.destroy');
+
+    // Log Kegiatan Magang
+    Route::get('/log-kegiatan', [LogKegiatanController::class, 'index'])
+        ->name('log.index');
+    Route::post('/log-kegiatan', [LogKegiatanController::class, 'store'])
+        ->name('log.store');
+    Route::put('/log-kegiatan/{id}', [LogKegiatanController::class, 'update'])
+        ->name('log.update');
+    Route::delete('/log-kegiatan/{id}', [LogKegiatanController::class, 'destroy'])
+        ->name('log.destroy');
+
+    // Laporan Kegiatan
+    Route::get('/laporan-kegiatan', [LaporanKegiatanController::class, 'index'])
+        ->name('laporan.index');
+    Route::post('/laporan-kegiatan', [LaporanKegiatanController::class, 'store'])
+        ->name('laporan.store');
+    Route::get('/laporan-kegiatan/{id}/download', [LaporanKegiatanController::class, 'download'])
+        ->name('laporan.download');
+    Route::delete('/laporan-kegiatan/{id}', [LaporanKegiatanController::class, 'destroy'])
+        ->name('laporan.destroy');
+
+    // Hasil Penilaian
+    Route::get('/penilaian-saya', [PenilaianController::class, 'index'])
+        ->name('penilaian.index');
 });

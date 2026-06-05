@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lamaran;
+use App\Models\LaporanKegiatan;
+use App\Models\LogKegiatan;
+use App\Models\Lowongan;
 use App\Models\Mahasiswa;
+use App\Models\Penilaian;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -109,16 +115,87 @@ class MahasiswaController extends Controller
         $user      = Auth::user();
         $mahasiswa = Mahasiswa::with('user')->where('user_id', $user->id)->first();
 
-        $sedangMagang    = false;
-        $statsMagang     = null;
-        $lamaranDiterima = null;
-        $logTerbaru      = collect();
-        $lamarans        = collect();
-        $lowonganTerbaru = collect();
+        // Cek lamaran yang diterima (sedang magang aktif)
+        $lamaranDiterima = Lamaran::where('mahasiswa_id', $user->id)
+            ->where('status', Lamaran::STATUS_DITERIMA)
+            ->with('lowongan.mitra')
+            ->latest()->first();
+
+        $sedangMagang = $lamaranDiterima !== null;
+
+        // Stats lamaran mahasiswa
+        $totalLamaran = Lamaran::where('mahasiswa_id', $user->id)->count();
+        $diterima     = Lamaran::where('mahasiswa_id', $user->id)
+            ->where('status', Lamaran::STATUS_DITERIMA)->count();
+
         $stats = [
-            'total_lamaran' => 0,
-            'diterima'      => 0,
+            'total_lamaran' => $totalLamaran,
+            'diterima'      => $diterima,
         ];
+
+        // Riwayat lamaran terbaru (5 terakhir)
+        $lamarans = Lamaran::where('mahasiswa_id', $user->id)
+            ->with('lowongan.mitra')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // Lowongan aktif terbaru untuk ditampilkan di dashboard
+        $lowonganTerbaru = Lowongan::where('status', 'aktif')
+            ->whereHas('mitra')
+            ->with('mitra')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $statsMagang = null;
+        $logTerbaru  = collect();
+
+        if ($sedangMagang) {
+            // Hitung progress minggu
+            $mulai          = $lamaranDiterima->diproses_pada ?? $lamaranDiterima->created_at;
+            $totalMinggu    = 16;
+            $mingguBerjalan = min($totalMinggu, max(1, (int) floor(Carbon::parse($mulai)->diffInWeeks(now())) + 1));
+            $deadline       = Carbon::parse($mulai)->addWeeks($totalMinggu);
+            $hariTersisa    = now()->lte($deadline) ? (int) now()->diffInDays($deadline) : 0;
+            $progressPct    = round(($mingguBerjalan / $totalMinggu) * 100);
+
+            // Nilai sementara dari tabel penilaian
+            $penilaian = Penilaian::where('mahasiswa_id', $user->id)
+                ->where('lamaran_id', $lamaranDiterima->id)
+                ->latest()->first();
+
+            // Log minggu ini
+            $startOfWeek  = now()->startOfWeek();
+            $logMingguIni = LogKegiatan::where('mahasiswa_id', $user->id)
+                ->where('tanggal', '>=', $startOfWeek)
+                ->count();
+
+            // Laporan terkumpul
+            $totalDokWajib    = 4;
+            $laporanTerkumpul = LaporanKegiatan::where('mahasiswa_id', $user->id)
+                ->whereIn('jenis_laporan', ['mingguan', 'tengah', 'akhir', 'presentasi'])
+                ->count();
+
+            // Log kegiatan terbaru (5 terakhir)
+            $logTerbaru = LogKegiatan::where('mahasiswa_id', $user->id)
+                ->orderBy('tanggal', 'desc')
+                ->take(5)
+                ->get();
+
+            $statsMagang = [
+                'nilai_sementara'   => $penilaian ? ($penilaian->nilai_akhir ?? $penilaian->nilai_rata_rata ?? null) : null,
+                'log_minggu_ini'    => $logMingguIni,
+                'laporan_terkumpul' => $laporanTerkumpul,
+                'total_dok_wajib'   => $totalDokWajib,
+                'hari_tersisa'      => $hariTersisa,
+                'deadline'          => $deadline,
+                'minggu_berjalan'   => $mingguBerjalan,
+                'total_minggu'      => $totalMinggu,
+                'progress_pct'      => $progressPct,
+                'mulai'             => Carbon::parse($mulai),
+            ];
+        }
 
         return view('dashboard', compact(
             'user',
