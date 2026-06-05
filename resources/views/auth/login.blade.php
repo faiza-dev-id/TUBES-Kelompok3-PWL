@@ -283,7 +283,7 @@ input:focus{
 
     <div class="left-footer">
       <div class="steps">
-    
+
       </div>
     </div>
   </div>

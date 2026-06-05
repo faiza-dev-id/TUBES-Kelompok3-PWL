@@ -18,14 +18,14 @@ Route::get('/', function () {
 | Authentication Routes
 |--------------------------------------------------------------------------
 */
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
 
-// Registrasi Biodata Mahasiswa
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
 
-// Login & Logout
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
@@ -35,7 +35,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 Route::middleware(['auth', 'nocache'])->group(function () {
 
-    // Lihat & edit profil sendiri
     Route::get('/profil', [MahasiswaController::class, 'profile'])
         ->name('mahasiswa.profile');
 
