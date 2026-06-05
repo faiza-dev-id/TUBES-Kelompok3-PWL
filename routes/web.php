@@ -38,6 +38,12 @@ Route::middleware(['auth', 'nocache'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [MahasiswaController::class, 'dashboard'])
         ->name('dashboard');
+        
+    // Biodata (diisi setelah register)
+Route::get('/biodata', [MahasiswaController::class, 'showBiodata'])
+    ->name('mahasiswa.biodata');
+Route::post('/biodata', [MahasiswaController::class, 'storeBiodata'])
+    ->name('mahasiswa.storeBiodata');
 
     // Profil
     Route::get('/profil', [MahasiswaController::class, 'profile'])

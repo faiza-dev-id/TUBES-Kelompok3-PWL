@@ -254,7 +254,7 @@
         <div class="alert-success">{{ session('success') }}</div>
     @endif
 
-    <form action="{{ route('mahasiswa.store') }}" method="POST">
+    <form action="{{ route('mahasiswa.storeBiodata') }}" method="POST">
         @csrf
 
         {{-- Informasi Akun --}}

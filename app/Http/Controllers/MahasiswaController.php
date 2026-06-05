@@ -9,7 +9,46 @@ use Illuminate\Support\Facades\Storage;
 
 class MahasiswaController extends Controller
 {
+    // ─────────────────────────────────────────────
+    // Tampilkan form biodata (setelah register)
+    // ─────────────────────────────────────────────
+    public function showBiodata()
+    {
+        return view('auth.biodata');
+    }
+
+    // ─────────────────────────────────────────────
+    // Simpan biodata setelah register
+    // ─────────────────────────────────────────────
+    public function storeBiodata(Request $request)
+    {
+        $request->validate([
+            'nim'      => 'required|string|unique:mahasiswa,nim',
+            'jurusan'  => 'required|string|max:100',
+            'semester' => 'required|integer|min:1|max:14',
+        ], [
+            'nim.required'      => 'NIM wajib diisi.',
+            'nim.unique'        => 'NIM sudah terdaftar.',
+            'jurusan.required'  => 'Jurusan wajib diisi.',
+            'semester.required' => 'Semester wajib dipilih.',
+            'semester.min'      => 'Semester tidak valid.',
+            'semester.max'      => 'Semester tidak valid.',
+        ]);
+
+        Mahasiswa::create([
+            'user_id'  => Auth::id(),
+            'nim'      => $request->nim,
+            'jurusan'  => $request->jurusan,
+            'semester' => $request->semester,
+        ]);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Biodata berhasil disimpan! Selamat datang, ' . Auth::user()->name . '.');
+    }
+
+    // ─────────────────────────────────────────────
     // List semua mahasiswa (admin)
+    // ─────────────────────────────────────────────
     public function index()
     {
         $mahasiswa = Mahasiswa::with('user')->get();
@@ -62,35 +101,38 @@ class MahasiswaController extends Controller
         return response()->json(['message' => 'Mahasiswa berhasil dihapus']);
     }
 
+    // ─────────────────────────────────────────────
     // Dashboard mahasiswa (web)
-public function dashboard()
-{
-    $user      = Auth::user();
-    $mahasiswa = Mahasiswa::with('user')->where('user_id', $user->id)->first();
+    // ─────────────────────────────────────────────
+    public function dashboard()
+    {
+        $user      = Auth::user();
+        $mahasiswa = Mahasiswa::with('user')->where('user_id', $user->id)->first();
 
-    $sedangMagang    = false;
-    $statsMagang     = null;
-    $lamaranDiterima = null;
-    $logTerbaru      = collect();
-    $lamarans        = collect();
-    $lowonganTerbaru = collect();
-    $stats = [
-        'total_lamaran' => 0,
-        'diterima'      => 0,
-    ];
+        $sedangMagang    = false;
+        $statsMagang     = null;
+        $lamaranDiterima = null;
+        $logTerbaru      = collect();
+        $lamarans        = collect();
+        $lowonganTerbaru = collect();
+        $stats = [
+            'total_lamaran' => 0,
+            'diterima'      => 0,
+        ];
 
-    return view('dashboard', compact(
-        'user',
-        'mahasiswa',
-        'sedangMagang',
-        'statsMagang',
-        'lamaranDiterima',
-        'logTerbaru',
-        'lamarans',
-        'stats',
-        'lowonganTerbaru'
-    ));
-}
+        return view('dashboard', compact(
+            'user',
+            'mahasiswa',
+            'sedangMagang',
+            'statsMagang',
+            'lamaranDiterima',
+            'logTerbaru',
+            'lamarans',
+            'stats',
+            'lowonganTerbaru'
+        ));
+    }
+
     // ─────────────────────────────────────────────
     // Tampilkan halaman edit profil (web)
     // ─────────────────────────────────────────────
@@ -134,7 +176,6 @@ public function dashboard()
 
         // Handle upload foto
         if ($request->hasFile('foto_profil')) {
-            // Hapus foto lama kalau ada
             if ($mahasiswa->foto_profil) {
                 Storage::disk('public')->delete($mahasiswa->foto_profil);
             }
