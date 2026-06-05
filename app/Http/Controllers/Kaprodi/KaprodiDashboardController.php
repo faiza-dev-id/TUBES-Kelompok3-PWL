@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Mahasiswa;
 use App\Models\Lamaran;
 use App\Models\Penilaian;
 use App\Models\Mitra;
 
 class KaprodiDashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
@@ -22,22 +24,39 @@ class KaprodiDashboardController extends Controller
             'selesai_magang'  => Penilaian::distinct('mahasiswa_id')->count('mahasiswa_id'),
         ];
 
-        // Mahasiswa yang sedang magang
-        $mahasiswaMagang = Lamaran::where('status', 'diterima')
-            ->with(['mahasiswa', 'lowongan.mitra'])
-            ->latest('diproses_pada')
-            ->take(8)
-            ->get();
+        // Daftar prodi unik untuk filter
+        $prodiList = Mahasiswa::select('jurusan')
+            ->whereNotNull('jurusan')
+            ->distinct()
+            ->orderBy('jurusan')
+            ->pluck('jurusan');
 
-        // Rekapitulasi nilai (yang sudah ada nilai akhir)
-        $rekapNilai = Penilaian::whereNotNull('nilai_akhir')
-            ->with(['mahasiswa', 'lamaran.lowongan.mitra'])
-            ->latest()
-            ->take(8)
-            ->get();
+        // Filter
+        $filterProdi  = $request->get('prodi');
+        $filterStatus = $request->get('status');
+
+        // Query mahasiswa dengan status lamaran terbaru
+        $query = User::where('role', 'mahasiswa')
+            ->with(['mahasiswa', 'lamaran' => function ($q) {
+                $q->latest()->limit(1);
+            }])
+            ->when($filterProdi, function ($q) use ($filterProdi) {
+                $q->whereHas('mahasiswa', fn($m) => $m->where('jurusan', $filterProdi));
+            })
+            ->when($filterStatus === 'magang', function ($q) {
+                $q->whereHas('lamaran', fn($l) => $l->where('status', 'diterima'));
+            })
+            ->when($filterStatus === 'belum', function ($q) {
+                $q->whereDoesntHave('lamaran', fn($l) => $l->where('status', 'diterima'));
+            })
+            ->when($filterStatus === 'selesai', function ($q) {
+                $q->whereHas('lamaran', fn($l) => $l->where('status', 'selesai'));
+            });
+
+        $mahasiswaList = $query->paginate(15)->withQueryString();
 
         return view('kaprodi.dashboard', compact(
-            'user', 'stats', 'mahasiswaMagang', 'rekapNilai'
+            'user', 'stats', 'mahasiswaList', 'prodiList', 'filterProdi', 'filterStatus'
         ));
     }
 }
