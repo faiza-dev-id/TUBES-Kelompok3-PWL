@@ -18,17 +18,19 @@ class AdminLamaranController extends Controller
 
         if ($request->filled('search')) {
             $q = $request->search;
-            $query->whereHas('mahasiswa', fn($q2) => $q2->where('name', 'like', "%$q%"))
-                  ->orWhereHas('lowongan.mitra', fn($q3) => $q3->where('nama_perusahaan', 'like', "%$q%"));
+            $query->where(function ($q2) use ($q) {
+                $q2->whereHas('mahasiswa', fn($q3) => $q3->where('name', 'like', "%$q%"))
+                   ->orWhereHas('lowongan.mitra', fn($q4) => $q4->where('nama_perusahaan', 'like', "%$q%"));
+            });
         }
 
         $lamarans = $query->latest()->paginate(20)->withQueryString();
 
         $stats = [
-            'total'   => Lamaran::count(),
-            'pending' => Lamaran::where('status', 'pending')->count(),
-            'diterima'=> Lamaran::where('status', 'diterima')->count(),
-            'ditolak' => Lamaran::where('status', 'ditolak')->count(),
+            'total'    => Lamaran::count(),
+            'pending'  => Lamaran::where('status', 'pending')->count(),
+            'diterima' => Lamaran::where('status', 'diterima')->count(),
+            'ditolak'  => Lamaran::where('status', 'ditolak')->count(),
         ];
 
         return view('admin.lamaran.index', compact('lamarans', 'stats'));
@@ -36,7 +38,12 @@ class AdminLamaranController extends Controller
 
     public function show(Lamaran $lamaran)
     {
-        $lamaran->load(['mahasiswa', 'lowongan.mitra']);
+        // FIXED: load mahasiswa.mahasiswa (user → profil mahasiswa) untuk tampilkan NIM/jurusan
+        $lamaran->load([
+            'mahasiswa.mahasiswa',
+            'lowongan.mitra',
+        ]);
+
         return view('admin.lamaran.show', compact('lamaran'));
     }
 }
