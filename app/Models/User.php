@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    // Role constants
     const ROLE_MAHASISWA = 'mahasiswa';
     const ROLE_MITRA     = 'mitra';
     const ROLE_ADMIN     = 'admin';
@@ -39,38 +39,17 @@ class User extends Authenticatable
 
     // ── Role helpers ──────────────────────────────────────────────────
 
-    public function isMitra(): bool
-    {
-        return $this->role === self::ROLE_MITRA;
-    }
+    public function isMitra(): bool        { return $this->role === self::ROLE_MITRA; }
+    public function isMahasiswa(): bool    { return $this->role === self::ROLE_MAHASISWA; }
+    public function isAdmin(): bool        { return $this->role === self::ROLE_ADMIN; }
+    public function isKaprodi(): bool      { return $this->role === self::ROLE_KAPRODI; }
+    public function isSekprodi(): bool     { return $this->role === self::ROLE_SEKPRODI; }
 
-    public function isMahasiswa(): bool
-    {
-        return $this->role === self::ROLE_MAHASISWA;
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->role === self::ROLE_ADMIN;
-    }
-
-    public function isKaprodi(): bool
-    {
-        return $this->role === self::ROLE_KAPRODI;
-    }
-
-    public function isSekprodi(): bool
-    {
-        return $this->role === self::ROLE_SEKPRODI;
-    }
-
-    /** Kaprodi atau Sekprodi (keduanya punya akses portal yang sama) */
     public function isKaprodiOrSekprodi(): bool
     {
         return in_array($this->role, [self::ROLE_KAPRODI, self::ROLE_SEKPRODI]);
     }
 
-    /** Staf internal (Admin, Kaprodi, Sekprodi) */
     public function isStaff(): bool
     {
         return in_array($this->role, [
@@ -90,5 +69,10 @@ class User extends Authenticatable
     public function mahasiswa()
     {
         return $this->hasOne(Mahasiswa::class, 'user_id');
+    }
+
+    public function lamaran()
+    {
+        return $this->hasMany(Lamaran::class, 'mahasiswa_id');
     }
 }

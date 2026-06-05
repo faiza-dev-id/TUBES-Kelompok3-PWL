@@ -260,7 +260,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <div class="htags">
           @if($sedangMagang && $statsMagang)
             <span class="htag htag-green">Sedang Magang</span>
-            <span class="htag htag-blue">{{ $lamaranDiterima->lowongan->mitra->nama_perusahaan ?? 'Mitra' }}</span>
+            <span class="htag htag-blue">{{ $lamaranDiterima?->lowongan?->mitra?->nama_perusahaan ?? 'Mitra' }}</span>
             <span class="htag htag-amber">Minggu ke-{{ $statsMagang['minggu_berjalan'] }}</span>
           @else
             <span class="htag htag-amber">Belum Magang</span>
@@ -271,12 +271,13 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div class="hero-right">
         @if($sedangMagang && $statsMagang)
           {{-- Progress magang saat aktif --}}
-          <div class="hero-pct">{{ $statsMagang['progress_pct'] }}<span style="font-size:16px;color:rgba(255,255,255,.5)">%</span></div>
+          <div class="hero-pct">{{ $statsMagang['progress_pct'] ?? 0 }}<span style="font-size:16px;color:rgba(255,255,255,.5)">%</span></div>
           <div class="hero-sub">Progress magang</div>
           <div class="prog-wrap">
             <div class="prog-bar">
-              <div class="prog-fill" style="width:{{ $statsMagang['progress_pct'] }}%"></div>
+              <div class="prog-fill" style="width: {{ $statsMagang['progress_pct'] ?? 0 }}%;"></div>
             </div>
+           
             <div class="prog-note">{{ $statsMagang['minggu_berjalan'] }} / {{ $statsMagang['total_minggu'] }} minggu selesai</div>
           </div>
         @else
@@ -290,7 +291,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
                   ? round(($stats['diterima'] / $stats['total_lamaran']) * 100)
                   : 0;
               @endphp
-              <div class="prog-fill" style="width:{{ $pct }}%"></div>
+              <div class="prog-fill" style="width: {{ $pct }}%;"></div>
             </div>
             <div class="prog-note">{{ $pct }}% diterima</div>
           </div>
@@ -345,7 +346,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <div class="ps-sub">
             Minggu ke-<strong>{{ $statsMagang['minggu_berjalan'] }}</strong>
             dari <strong>{{ $statsMagang['total_minggu'] }}</strong> minggu
-            &nbsp;·&nbsp; <strong>{{ $statsMagang['progress_pct'] }}%</strong> selesai
+            &nbsp;·&nbsp; <strong>{{ $statsMagang['progress_pct'] ?? 0 }}%</strong> selesai
           </div>
         </div>
         <div class="ps-weeks">
