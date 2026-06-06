@@ -39,6 +39,7 @@ class LaporanKegiatanController extends Controller
 
         $docSelesai = $laporan->where('status', 'diterima')->count();
         $docTotal   = 4; // laporan mingguan, tengah, akhir, presentasi
+        $sedangMagang = true; // Sudah pasti magang aktif
 
         return view('laporan.index', compact(
             'user',
@@ -47,7 +48,8 @@ class LaporanKegiatanController extends Controller
             'hariTersisa',
             'deadline',
             'docSelesai',
-            'docTotal'
+            'docTotal',
+            'sedangMagang'
         ));
     }
 

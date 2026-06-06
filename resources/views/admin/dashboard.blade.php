@@ -268,7 +268,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
               <tr>
                 <td style="font-weight:600">{{ $lmr->mahasiswa->name ?? '-' }}</td>
                 <td style="color:var(--text-2)">
-                  <div style="font-size:12px;">{{ $lmr->lowongan->judul ?? '-' }}</div>
+                  <div style="font-size:12px;">{{ $lmr->lowongan->judul_lowongan ?? '-' }}</div>
                   <div style="font-size:10.5px;color:var(--text-3);margin-top:1px;">{{ $lmr->lowongan->mitra->nama_perusahaan ?? '-' }}</div>
                 </td>
                 <td><span class="pill p-pend">⏳ Pending</span></td>

@@ -35,11 +35,14 @@ class PenilaianController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $sedangMagang = true; // Sudah pasti magang aktif
+
         return view('penilaian.index', compact(
             'user',
             'lamaranDiterima',
             'penilaian',
-            'riwayatPenilaian'
+            'riwayatPenilaian',
+            'sedangMagang'
         ));
     }
 }

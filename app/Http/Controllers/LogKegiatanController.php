@@ -47,13 +47,16 @@ class LogKegiatanController extends Controller
             'menunggu'  => LogKegiatan::where('mahasiswa_id', $user->id)->where('status', 'menunggu')->count(),
         ];
 
+        $sedangMagang = true; // Sudah pasti magang aktif (ada lamaranDiterima)
+
         return view('log_kegiatan.index', compact(
             'user',
             'lamaranDiterima',
             'logs',
             'mingguBerjalan',
             'totalMinggu',
-            'stats'
+            'stats',
+            'sedangMagang'
         ));
     }
 

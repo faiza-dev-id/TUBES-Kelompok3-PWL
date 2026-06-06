@@ -190,15 +190,17 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       @csrf
       <input type="hidden" name="lowongan_id" id="modal-lowongan-id">
       <div class="form-group">
-        <label class="form-label">Upload CV (PDF, opsional)</label>
-        <input type="file" name="cv_path" class="form-input" accept=".pdf">
+        <label class="form-label">Upload CV <span style="color:var(--red);">*</span> (PDF, maks. 2MB)</label>
+        <input type="file" name="cv_path" id="input-cv" class="form-input" accept=".pdf" required>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px;">Wajib diisi. Hanya file PDF yang diterima.</div>
       </div>
       <div class="form-group">
-        <label class="form-label">Surat Lamaran (PDF, opsional)</label>
-        <input type="file" name="surat_lamaran_path" class="form-input" accept=".pdf">
+        <label class="form-label">Surat Lamaran <span style="color:var(--red);">*</span> (PDF, maks. 2MB)</label>
+        <input type="file" name="surat_lamaran_path" id="input-surat" class="form-input" accept=".pdf" required>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px;">Wajib diisi. Hanya file PDF yang diterima.</div>
       </div>
       <div style="background:var(--amber-dim);border-radius:9px;padding:10px 14px;font-size:12px;color:var(--amber);margin-bottom:16px;">
-        ⚠ Pastikan data profilmu sudah lengkap sebelum melamar.
+        ⚠ CV dan Surat Lamaran wajib dilampirkan dalam format PDF.
       </div>
       <div style="display:flex;gap:10px;justify-content:flex-end;">
         <button type="button" class="btn" style="background:var(--bg3);color:var(--text-2);" onclick="closeModal()">Batal</button>
@@ -213,11 +215,33 @@ function openModal(id, posisi, mitra) {
   document.getElementById('modal-lowongan-id').value = id;
   document.getElementById('modal-posisi').textContent = posisi;
   document.getElementById('modal-mitra').textContent = mitra;
+  // Reset form setiap kali modal dibuka
+  document.getElementById('input-cv').value = '';
+  document.getElementById('input-surat').value = '';
   document.getElementById('modalLamar').classList.add('open');
 }
 function closeModal() {
   document.getElementById('modalLamar').classList.remove('open');
 }
+
+document.querySelector('#modalLamar form').addEventListener('submit', function(e) {
+  const cv    = document.getElementById('input-cv');
+  const surat = document.getElementById('input-surat');
+  let errors  = [];
+
+  if (!cv.files || cv.files.length === 0) {
+    errors.push('CV wajib dilampirkan.');
+  }
+  if (!surat.files || surat.files.length === 0) {
+    errors.push('Surat Lamaran wajib dilampirkan.');
+  }
+
+  if (errors.length > 0) {
+    e.preventDefault();
+    alert('⚠ ' + errors.join('\n'));
+    return false;
+  }
+});
 </script>
 </body>
 </html>

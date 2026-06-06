@@ -29,7 +29,9 @@ class LamaranMahasiswaController extends Controller
             'ditolak'  => $lamarans->where('status', 'ditolak')->count(),
         ];
 
-        return view('lamaran.index', compact('user', 'lamarans', 'stats'));
+        $sedangMagang = $lamarans->where('status', 'diterima')->isNotEmpty();
+
+        return view('lamaran.index', compact('user', 'lamarans', 'stats', 'sedangMagang'));
     }
 
     /**
@@ -41,8 +43,8 @@ class LamaranMahasiswaController extends Controller
 
         $request->validate([
             'lowongan_id'        => 'required|exists:lowongan,id',
-            'cv_path'            => 'nullable|file|mimes:pdf|max:2048',
-            'surat_lamaran_path' => 'nullable|file|mimes:pdf|max:2048',
+            'cv_path'            => 'required|file|mimes:pdf|max:10240',
+            'surat_lamaran_path' => 'required|file|mimes:pdf|max:10240',
         ]);
 
         // Cek apakah sudah magang aktif
@@ -86,7 +88,7 @@ class LamaranMahasiswaController extends Controller
             'surat_lamaran_path' => $suratPath,
         ]);
 
-        return redirect()->route('lamaran.saya')
+        return redirect()->route('lamaran.index')
             ->with('success', 'Lamaran berhasil dikirim!');
     }
 
