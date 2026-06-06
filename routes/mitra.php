@@ -7,6 +7,7 @@ use App\Http\Controllers\Mitra\MitraPelamarController;
 use App\Http\Controllers\Mitra\MitraLogController;
 use App\Http\Controllers\Mitra\MitraPenilaianController;
 use App\Http\Controllers\Mitra\MitraNilaiAkhirController;
+use App\Http\Controllers\Mitra\MitraMahasiswaController; // FIX: tambah import
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,12 @@ Route::middleware(['auth', 'mitra', 'nocache'])->prefix('mitra')->name('mitra.')
     Route::get('/pelamar',              [MitraPelamarController::class, 'index'])  ->name('pelamar.index');
     Route::post('/pelamar/{id}/terima', [MitraPelamarController::class, 'terima']) ->name('pelamar.terima');
     Route::post('/pelamar/{id}/tolak',  [MitraPelamarController::class, 'tolak'])  ->name('pelamar.tolak');
+
+    // ── Mahasiswa Magang (FIX: routes yang sebelumnya hilang) ──────────
+    Route::get('/mahasiswa-magang',              [MitraMahasiswaController::class, 'index'])
+        ->name('mahasiswa.index');
+    Route::post('/mahasiswa-magang/{id}/hapus',  [MitraMahasiswaController::class, 'hapus'])
+        ->name('mahasiswa.hapus');
 
     // ── Log Kegiatan Mahasiswa ─────────────────────────────────────────
     Route::get('/log-mahasiswa',              [MitraLogController::class, 'index'])   ->name('log.index');

@@ -126,6 +126,15 @@
                                     Edit
                                 </a>
                                 @if($u->id !== auth()->id())
+                                {{-- FIX: Tambah tombol Reset Password --}}
+                                <form method="POST" action="{{ route('admin.users.resetPassword', $u) }}"
+                                      onsubmit="return confirm('Reset password {{ $u->name }}? Password baru akan dikirim ke email.')">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs hover:bg-blue-100">
+                                        Reset PW
+                                    </button>
+                                </form>
                                 <form method="POST" action="{{ route('admin.users.destroy', $u) }}"
                                       onsubmit="return confirm('Hapus user {{ $u->name }}?')">
                                     @csrf @method('DELETE')

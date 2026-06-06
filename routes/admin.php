@@ -22,9 +22,12 @@ Route::middleware(['auth', 'admin', 'nocache'])->prefix('admin')->name('admin.')
     Route::get('/users',           [AdminUserController::class, 'index'])  ->name('users.index');
     Route::get('/users/create',    [AdminUserController::class, 'create']) ->name('users.create');
     Route::post('/users',          [AdminUserController::class, 'store'])  ->name('users.store');
-    Route::get('/users/{user}/edit',   [AdminUserController::class, 'edit'])   ->name('users.edit');
-    Route::put('/users/{user}',        [AdminUserController::class, 'update']) ->name('users.update');
-    Route::delete('/users/{user}',     [AdminUserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/users/{user}/edit',   [AdminUserController::class, 'edit'])         ->name('users.edit');
+    Route::put('/users/{user}',        [AdminUserController::class, 'update'])       ->name('users.update');
+    Route::delete('/users/{user}',     [AdminUserController::class, 'destroy'])      ->name('users.destroy');
+    // FIX: tambah route reset password yang ada di controller tapi tidak ada routenya
+    Route::post('/users/{user}/reset-password', [AdminUserController::class, 'resetPassword'])
+        ->name('users.resetPassword');
 
     // ── Manajemen Mitra ────────────────────────────────────────────────
     Route::get('/mitra',               [AdminMitraController::class, 'index'])  ->name('mitra.index');

@@ -15,6 +15,10 @@
     <a href="{{ route('mitra.pelamar.index') }}" class="nav-item {{ request()->routeIs('mitra.pelamar.*') ? 'active' : '' }}">
       <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Daftar Pelamar
     </a>
+    {{-- FIX: tambah menu Mahasiswa Magang yang sebelumnya tidak ada --}}
+    <a href="{{ route('mitra.mahasiswa.index') }}" class="nav-item {{ request()->routeIs('mitra.mahasiswa.*') ? 'active' : '' }}">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-4 4-2-2"/></svg>Mahasiswa Magang
+    </a>
     <a href="{{ route('mitra.log.index') }}" class="nav-item {{ request()->routeIs('mitra.log.*') ? 'active' : '' }}">
       <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Log Kegiatan Mahasiswa
     </a>

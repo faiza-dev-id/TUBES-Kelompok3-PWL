@@ -8,16 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('mahasiswa', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('nim')->unique();
-            $table->string('jurusan');
-            $table->integer('semester');
-            $table->timestamps();
+       
+        if (!Schema::hasTable('mahasiswa')) {
+            Schema::create('mahasiswa', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id');
+                $table->string('nim')->unique();
+                $table->string('jurusan');
+                $table->integer('semester');
+                $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            });
+        }
     }
 
     public function down(): void

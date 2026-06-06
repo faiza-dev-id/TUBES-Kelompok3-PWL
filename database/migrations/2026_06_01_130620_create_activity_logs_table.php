@@ -8,15 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('log_magang', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('mahasiswa_id')->constrained('mahasiswas')->onDelete('cascade');
-            $table->foreignId('lowongan_id')->constrained('lowongans')->onDelete('cascade');
-            $table->date('tanggal');
-            $table->text('kegiatan');
-            $table->text('keterangan')->nullable();
-            $table->timestamps();
-        });
+    
+        if (!Schema::hasTable('log_magang')) {
+            Schema::create('log_magang', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('mahasiswa_id')->constrained('users')->onDelete('cascade');
+                $table->foreignId('lowongan_id')->constrained('lowongan')->onDelete('cascade');
+                $table->date('tanggal');
+                $table->text('kegiatan');
+                $table->text('keterangan')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     public function down(): void
