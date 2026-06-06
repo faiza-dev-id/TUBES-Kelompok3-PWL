@@ -26,7 +26,7 @@ SIGMA dikembangkan menggunakan framework **Laravel** dengan database **MySQL**, 
 
 ## Peran dalam Sistem
 
-SIGMA memiliki 5 peran (role) dengan hak akses dan fitur yang berbeda-beda:
+SIGMA memiliki 4 peran (role) dengan hak akses dan fitur yang berbeda-beda:
 
 # 1.Mahasiswa
 | Fitur | Keterangan |
@@ -63,9 +63,6 @@ SIGMA memiliki 5 peran (role) dengan hak akses dan fitur yang berbeda-beda:
 | Detail Mahasiswa | Melihat log, laporan, dan penilaian per mahasiswa |
 | Rekap Nilai | Melihat rekap nilai akhir seluruh mahasiswa |
 
-# 5.Sekretaris Program Studi (Sekprodi)
-Memiliki akses yang sama dengan Kaprodi untuk keperluan administrasi program studi.
-
 ---
 
 # Tampilan Output
@@ -93,88 +90,6 @@ Grafik dan statistik mahasiswa magang, filter per prodi dan status, serta akses 
 
 # Portal Mitra
 Dashboard mitra dengan statistik pelamar, daftar mahasiswa aktif magang, form penilaian, dan manajemen lowongan.
-
----
-
-# Cara Menjalankan
-
-# Prasyarat
-Pastikan perangkat sudah terinstal:
-- **PHP** >= 8.2
-- **Composer**
-- **MySQL** (via XAMPP / Laragon)
-- **Node.js** & NPM
-
-# Langkah Instalasi
-
-*1. Clone Repository**
-```bash
-git clone https://github.com/faiza-dev-id/TUBES-Kelompok3-PWL.git
-cd TUBES-Kelompok3-PWL
-```
-
-*2. Install Dependensi PHP**
-```bash
-composer install
-```
-
-*3. Install Dependensi JavaScript**
-```bash
-npm install
-```
-
-*4. Konfigurasi Environment**
-```bash
-cp .env.example .env
-php artisan key:generate
-```
-
-Edit file `.env` sesuaikan dengan konfigurasi database lokal:
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=saya_sigma
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-*5. Buat Database**
-
-Buat database baru bernama `saya_sigma` melalui phpMyAdmin atau terminal:
-```bash
-mysql -u root -p -e "CREATE DATABASE saya_sigma;"
-```
-
-*6. Jalankan Migrasi & Seeder**
-```bash
-php artisan migrate
-php artisan db:seed --class=DemoSeeder
-```
-
-*7. Buat Symlink Storage**
-```bash
-php artisan storage:link
-```
-
-*8. Jalankan Aplikasi**
-```bash
-php artisan serve
-```
-
-Akses di browser: **http://127.0.0.1:8000**
-
----
-
-# Akun Demo
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@sigma.test | admin123 |
-| Kaprodi | kaprodi@sigma.test | kaprodi123 |
-| Sekprodi | sekprodi@sigma.test | sekprodi123 |
-| Mitra | mitra1@sigma.test | mitra123 |
-| Mahasiswa | mahasiswa1@sigma.test | mahasiswa123 |
 
 ---
 
