@@ -1,4 +1,4 @@
-SIGMA — Sistem Informasi Magang Mahasiswa
+# SIGMA — Sistem Informasi Magang Mahasiswa
 
 SIGMA (Sistem Informasi Magang Mahasiswa) merupakan aplikasi berbasis web yang dikembangkan untuk membantu pengelolaan proses magang mahasiswa secara terintegrasi, terstruktur, dan transparan. Sistem ini dirancang untuk mempermudah mahasiswa dalam mencari lowongan magang, mengajukan lamaran, serta melakukan monitoring kegiatan selama menjalani program magang. Selain itu, SIGMA juga membantu pihak mitra dan program studi dalam memantau perkembangan mahasiswa, mengelola data magang, serta melakukan evaluasi dan penilaian secara lebih efektif.
 
@@ -8,16 +8,7 @@ Berdasarkan revisi dan masukan dari dosen, terdapat beberapa penyesuaian pada si
 
 SIGMA dikembangkan menggunakan framework Laravel dengan database MySQL serta menerapkan sistem version control menggunakan GitHub untuk mendukung kolaborasi tim dalam proses pengembangan aplikasi. Dengan adanya sistem ini, diharapkan proses pengelolaan magang menjadi lebih modern, efisien, serta mampu meningkatkan kualitas monitoring dan komunikasi antara mahasiswa, mitra, dan pihak kampus.
 
-# SIGMA — Sistem Informasi Magang Mahasiswa
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"/>
-  <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>
-  <img src="https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white"/>
-  <img src="https://img.shields.io/badge/TailwindCSS-3.x-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
-</p>
-
----
 
 ## 📋 Deskripsi
 
