@@ -1,107 +1,206 @@
-# SIGMA — Sistem Informasi Magang Mahasiswa
+# 🎓 Sistem Manajemen Magang Mahasiswa (SIGMA)
 
-SIGMA (Sistem Informasi Magang Mahasiswa) merupakan aplikasi berbasis web yang dikembangkan untuk membantu pengelolaan proses magang mahasiswa secara terintegrasi, terstruktur, dan transparan. Sistem ini dirancang untuk mempermudah mahasiswa dalam mencari lowongan magang, mengajukan lamaran, serta melakukan monitoring kegiatan selama menjalani program magang. Selain itu, SIGMA juga membantu pihak mitra dan program studi dalam memantau perkembangan mahasiswa, mengelola data magang, serta melakukan evaluasi dan penilaian secara lebih efektif.
-
-Aplikasi ini memiliki beberapa fitur utama, seperti manajemen lowongan magang, pengajuan lamaran mahasiswa, monitoring log kegiatan magang, dashboard analytics, serta pengelolaan data pengguna berdasarkan role masing-masing, yaitu mahasiswa, mitra, admin operator, ketua program studi, dan sekretaris program studi. Pada fitur monitoring magang, mahasiswa diwajibkan mengisi log kegiatan secara berkala yang berisi tanggal kegiatan, deskripsi aktivitas, dan keterangan tambahan. Data log tersebut nantinya dapat dipantau langsung oleh pihak mitra sebagai bentuk monitoring aktivitas mahasiswa selama menjalani magang.
-
-Berdasarkan revisi dan masukan dari dosen, terdapat beberapa penyesuaian pada sistem, yaitu mitra tidak dapat melakukan registrasi akun secara mandiri karena akun mitra akan dibuat dan dikelola langsung oleh admin operator untuk menjaga validitas dan keamanan data perusahaan. Selain itu, pada proses seleksi lamaran magang, apabila mahasiswa ditolak oleh pihak mitra, sistem akan menampilkan alasan penolakan sehingga mahasiswa dapat mengetahui penyebab lamaran tidak diterima dan dapat melakukan evaluasi untuk pengajuan berikutnya.
-
-SIGMA dikembangkan menggunakan framework Laravel dengan database MySQL serta menerapkan sistem version control menggunakan GitHub untuk mendukung kolaborasi tim dalam proses pengembangan aplikasi. Dengan adanya sistem ini, diharapkan proses pengelolaan magang menjadi lebih modern, efisien, serta mampu meningkatkan kualitas monitoring dan komunikasi antara mahasiswa, mitra, dan pihak kampus.
-
-
-
-## 📋 Deskripsi
-
-**SIGMA (Sistem Informasi Magang Mahasiswa)** adalah aplikasi berbasis web yang dikembangkan untuk membantu pengelolaan proses magang mahasiswa secara terintegrasi, terstruktur, dan transparan.
-
-Sistem ini dirancang untuk:
-- Mempermudah mahasiswa dalam mencari lowongan magang dan mengajukan lamaran
-- Memungkinkan monitoring kegiatan magang secara real-time oleh mitra dan kaprodi
-- Memberikan sistem penilaian yang terstruktur dari mitra kepada mahasiswa
-- Membantu pihak program studi dalam memantau dan mengevaluasi seluruh proses magang
-
-SIGMA dikembangkan menggunakan framework **Laravel** dengan database **MySQL**, serta menerapkan sistem version control menggunakan **GitHub** untuk mendukung kolaborasi tim dalam proses pengembangan.
+Aplikasi web berbasis Laravel untuk mengelola seluruh proses magang mahasiswa — mulai dari pendaftaran, seleksi lamaran, pelaksanaan magang, hingga penilaian akhir.
 
 ---
 
-## Peran dalam Sistem
+## 📋 Daftar Isi
 
-SIGMA memiliki 4 peran (role) dengan hak akses dan fitur yang berbeda-beda:
-
-# 1.Mahasiswa
-| Fitur | Keterangan |
-|-------|-----------|
-| Registrasi & Login | Membuat akun dan mengisi biodata |
-| Browse Lowongan | Melihat daftar lowongan magang yang tersedia |
-| Kirim Lamaran | Mengajukan lamaran beserta CV dan surat lamaran |
-| Log Kegiatan | Mencatat aktivitas harian selama magang |
-| Upload Laporan | Mengunggah laporan mingguan, tengah, dan akhir |
-| Lihat Penilaian | Melihat hasil penilaian dari mitra |
-
-# 2.Mitra (Perusahaan)
-| Fitur | Keterangan |
-|-------|-----------|
-| Kelola Lowongan | Membuat, mengedit, dan menutup lowongan magang |
-| Seleksi Pelamar | Menerima atau menolak lamaran masuk |
-| Monitor Log | Menyetujui atau menolak log kegiatan mahasiswa |
-| Penilaian | Memberikan penilaian tengah dan akhir magang |
-| Kelola Mahasiswa | Mengelola mahasiswa aktif magang, termasuk pengeluaran dengan alasan |
-
-# 3.Admin Operator
-| Fitur | Keterangan |
-|-------|-----------|
-| Manajemen User | Membuat, mengedit, dan menghapus akun semua pengguna |
-| Manajemen Mitra | Mendaftarkan dan mengelola data perusahaan mitra |
-| Monitor Lamaran | Memantau seluruh lamaran yang masuk dalam sistem |
-| Reset Password | Mereset password user dan mengirimkannya via email |
-
-# 4.Ketua Program Studi (Kaprodi)
-| Fitur | Keterangan |
-|-------|-----------|
-| Dashboard Statistik | Melihat ringkasan data mahasiswa magang |
-| Monitor Mahasiswa | Memantau progress magang setiap mahasiswa |
-| Detail Mahasiswa | Melihat log, laporan, dan penilaian per mahasiswa |
-| Rekap Nilai | Melihat rekap nilai akhir seluruh mahasiswa |
+- [Tentang Aplikasi](#tentang-aplikasi)
+- [Peran Pengguna](#peran-pengguna)
+- [Fitur Lengkap](#fitur-lengkap)
+- [Instalasi](#instalasi)
+- [Saran Pengembangan dari Dosen](#saran-pengembangan-dari-dosen)
 
 ---
 
-# Tampilan Output
+## Tentang Aplikasi
 
-# Landing Page
-Halaman utama publik yang menampilkan informasi sistem SIGMA dan tombol login/register.
-
-# Dashboard Mahasiswa
-Menampilkan status magang aktif, progress log kegiatan, statistik lamaran, dan menu navigasi ke semua fitur mahasiswa.
-
-# Halaman Browse Lowongan
-Daftar lowongan magang yang tersedia dari berbagai mitra, lengkap dengan filter dan detail posisi.
-
-# Halaman Lamaran Saya
-Riwayat semua lamaran yang pernah diajukan beserta status (pending / diterima / ditolak) dan catatan dari mitra.
-
-# Log Kegiatan Magang
-Form pencatatan kegiatan harian dengan timeline per minggu, status persetujuan mitra, dan progress bar minggu berjalan.
-
-# Dashboard Admin
-Statistik keseluruhan sistem: total user, mitra, lamaran, dan monitor aktivitas.
-
-# Dashboard Kaprodi
-Grafik dan statistik mahasiswa magang, filter per prodi dan status, serta akses cepat ke detail setiap mahasiswa.
-
-# Portal Mitra
-Dashboard mitra dengan statistik pelamar, daftar mahasiswa aktif magang, form penilaian, dan manajemen lowongan.
+Sistem Manajemen Magang Mahasiswa adalah platform digital yang menjembatani mahasiswa, perusahaan mitra, admin kampus, dan ketua program studi dalam satu ekosistem terintegrasi. Aplikasi ini menggantikan proses manual yang memakan waktu dengan alur digital yang transparan dan terstruktur.
 
 ---
 
+## Peran Pengguna
 
-## 🏁 Penutup
+Aplikasi ini memiliki **4 peran** dengan portal dan hak akses masing-masing:
 
-SIGMA dikembangkan sebagai solusi digital untuk memoderniasi proses magang mahasiswa yang selama ini masih dilakukan secara manual dan terpisah-pisah. Dengan adanya sistem ini, diharapkan proses pengelolaan magang menjadi lebih **modern**, **efisien**, dan **transparan** — meningkatkan kualitas komunikasi antara mahasiswa, mitra perusahaan, dan pihak program studi.
-
-Sistem ini masih terus berkembang dan terbuka untuk pengembangan lebih lanjut, seperti integrasi notifikasi email, fitur chat antara mahasiswa dan mitra, serta ekspor laporan ke format PDF.
+| Peran | Portal | Keterangan |
+|---|---|---|
+| **Mahasiswa** | `/dashboard` | Mendaftar, melamar, menjalankan & melaporkan magang |
+| **Mitra** | `/mitra/dashboard` | Mengelola lowongan, menyeleksi pelamar, menilai mahasiswa |
+| **Admin** | `/admin/dashboard` | Mengelola seluruh user, mitra, dan memantau lamaran |
+| **Kaprodi** | `/kaprodi/dashboard` | Memantau data mahasiswa dan rekap nilai magang |
 
 ---
 
-<p align="center">
-  Dibuat oleh Kelompok 3 — Pemrograman Web Lanjut
-</p>
+## Fitur Lengkap
+
+### 🧑‍🎓 Portal Mahasiswa
+
+**Autentikasi & Profil**
+- Registrasi akun mahasiswa baru
+- Login dan logout dengan proteksi session
+- Pengisian biodata wajib setelah registrasi pertama (NIM, Program Studi, dll.)
+- Edit profil mahasiswa (nama, email, foto, dll.)
+
+**Browse & Melamar Lowongan**
+- Melihat daftar lowongan magang yang tersedia dari berbagai mitra
+- Melihat detail lowongan (deskripsi, persyaratan, perusahaan mitra)
+- Melamar lowongan dengan upload **CV** (PDF) dan **Surat Lamaran** (PDF)
+- Sistem pencegah duplikasi — tidak bisa melamar lowongan yang sama dua kali
+- Pembatalan lamaran yang masih berstatus *pending*
+
+**Riwayat Lamaran**
+- Melihat semua lamaran yang pernah dikirim beserta statusnya (*pending*, *diterima*, *ditolak*)
+- Melihat catatan/keterangan dari mitra terkait keputusan lamaran
+- Informasi tanggal melamar dan tanggal diproses
+
+**Log Kegiatan Magang**
+- Pencatatan log harian/mingguan selama masa magang berlangsung
+- Log dikelompokkan per minggu (durasi magang 16 minggu)
+- Melihat progress minggu magang yang berjalan
+- Edit dan hapus log yang belum disetujui mitra
+- Melihat status log: *menunggu*, *disetujui*, *ditolak*
+
+**Laporan Kegiatan**
+- Upload laporan kegiatan dalam format PDF
+- Download laporan yang sudah diupload
+- Hapus laporan kegiatan
+
+**Penilaian**
+- Melihat hasil penilaian dari mitra (penilaian tengah dan akhir magang)
+- Komponen nilai: Kedisiplinan, Komunikasi, Teknis, Inisiatif, Kerjasama
+- Melihat nilai akhir rata-rata
+
+---
+
+### 🏢 Portal Mitra
+
+**Dashboard**
+- Ringkasan statistik: jumlah lowongan aktif, total pelamar, mahasiswa sedang magang
+
+**Manajemen Lowongan**
+- Membuat lowongan magang baru
+- Mengedit informasi lowongan yang sudah ada
+- Menonaktifkan atau menghapus lowongan
+- Melihat daftar lowongan yang dimiliki
+
+**Seleksi Pelamar**
+- Melihat daftar semua pelamar beserta dokumen (CV & Surat Lamaran)
+- Filter pelamar berdasarkan lowongan atau status
+- **Menerima** pelamar — status berubah menjadi *diterima*
+- **Menolak** pelamar — status berubah menjadi *ditolak* dengan catatan alasan
+- Tidak bisa mengubah keputusan yang sudah diproses
+
+**Manajemen Mahasiswa Magang**
+- Melihat daftar mahasiswa yang sedang aktif magang
+- Menonaktifkan/mengeluarkan mahasiswa dari program magang
+
+**Pemantauan Log Kegiatan**
+- Melihat semua log kegiatan mahasiswa yang sedang magang
+- Menyetujui log kegiatan mahasiswa
+- Menolak log kegiatan dengan keterangan
+
+**Penilaian Mahasiswa**
+- Memberikan penilaian tengah magang dan penilaian akhir magang
+- Komponen penilaian: Kedisiplinan, Komunikasi, Teknis, Inisiatif, Kerjasama (skala 0–100)
+- Nilai akhir dihitung otomatis dari rata-rata 5 komponen
+- Menambahkan catatan untuk mahasiswa
+- Penilaian bisa diperbarui (update or create)
+
+**Nilai Akhir**
+- Melihat rekap nilai akhir semua mahasiswa yang pernah magang di perusahaan
+
+---
+
+### 🛡️ Portal Admin
+
+**Dashboard**
+- Statistik keseluruhan sistem (total user, mitra, lamaran, dll.)
+
+**Manajemen User**
+- Melihat daftar semua user terdaftar di sistem
+- Membuat akun user baru dengan berbagai role
+- Mengedit data user (nama, email, role)
+- Menghapus akun user
+- Reset password user
+
+**Manajemen Mitra**
+- Mendaftarkan perusahaan mitra baru beserta akun login-nya sekaligus
+- Mengedit data mitra (nama perusahaan, alamat, email)
+- Menghapus mitra (akun user terkait ikut terhapus secara otomatis)
+- Pencarian mitra berdasarkan nama atau email
+- Paginasi daftar mitra (15 data per halaman)
+
+**Monitor Lamaran**
+- Memantau seluruh lamaran yang masuk dari semua mahasiswa ke semua mitra
+- Melihat detail lamaran tertentu
+
+---
+
+### 🎓 Portal Kaprodi
+
+**Dashboard**
+- Ringkasan data mahasiswa yang sedang dan sudah menyelesaikan magang
+
+**Pemantauan Mahasiswa**
+- Melihat daftar semua mahasiswa yang terdaftar dalam sistem
+- Melihat detail profil dan riwayat magang mahasiswa tertentu
+
+**Rekap Nilai**
+- Melihat rekap nilai magang seluruh mahasiswa
+- Data nilai dapat digunakan untuk keperluan akademik
+
+---
+
+## Saran Pengembangan dari Dosen
+
+Berikut adalah fitur-fitur yang disarankan oleh dosen untuk dikembangkan lebih lanjut guna meningkatkan kualitas dan kelengkapan sistem:
+
+1. Notifikasi alasan penolakan ke mahasiswa — ketika mitra menolak lamaran, mahasiswa mendapat pesam otomatis berisi alasan penolakan yang jelas.
+2. Admin/operator membuat email untuk mitra  — admin mendaftarkan akun mitra agar aman dan hany amitra yang dapat mengakses akun tersebut.
+
+## Struktur Direktori Utama
+
+```
+manajemen-magang-mahasiswa/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/          # Controller portal admin
+│   │   │   ├── Kaprodi/        # Controller portal kaprodi
+│   │   │   ├── Mitra/          # Controller portal mitra
+│   │   │   └── ...             # Controller mahasiswa & umum
+│   │   └── Middleware/         # Middleware role-based access
+│   └── Models/                 # Eloquent models
+├── database/
+│   ├── migrations/             # Skema tabel database
+│   └── seeders/                # Data seeder & demo
+├── resources/views/            # Blade templates
+└── routes/
+    ├── web.php                 # Routes mahasiswa
+    ├── admin.php               # Routes admin
+    ├── mitra.php               # Routes mitra
+    ├── kaprodi.php             # Routes kaprodi
+    └── api.php                 # API routes (Sanctum)
+```
+
+---
+
+## Alur Utama Sistem
+
+```
+Mahasiswa Register → Isi Biodata → Browse Lowongan → Kirim Lamaran
+        ↓
+Mitra Review Lamaran → Terima / Tolak (+ Alasan)
+        ↓
+Mahasiswa Diterima → Mulai Magang → Catat Log Kegiatan → Upload Laporan
+        ↓
+Mitra Review Log → Setujui / Tolak
+        ↓
+Mitra Beri Penilaian Tengah & Akhir → Kaprodi Pantau Rekap Nilai
+```
+
+---
+
+*Dikembangkan sebagai proyek mata kuliah — Teknologi Informasi, 2026*
