@@ -7,7 +7,8 @@ use App\Http\Controllers\Mitra\MitraPelamarController;
 use App\Http\Controllers\Mitra\MitraLogController;
 use App\Http\Controllers\Mitra\MitraPenilaianController;
 use App\Http\Controllers\Mitra\MitraNilaiAkhirController;
-use App\Http\Controllers\Mitra\MitraMahasiswaController; // FIX: tambah import
+use App\Http\Controllers\Mitra\MitraMahasiswaController;
+use App\Http\Controllers\Mitra\MitraLaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,11 @@ Route::middleware(['auth', 'mitra', 'nocache'])->prefix('mitra')->name('mitra.')
     // ── Penilaian Mahasiswa ────────────────────────────────────────────
     Route::get('/penilaian',  [MitraPenilaianController::class, 'index']) ->name('penilaian.index');
     Route::post('/penilaian', [MitraPenilaianController::class, 'store']) ->name('penilaian.store');
+
+    // ── Laporan Mahasiswa
+    Route::get('/laporan',               [MitraLaporanController::class, 'index'])  ->name('laporan.index');
+    Route::post('/laporan/{id}/setujui', [MitraLaporanController::class, 'setujui'])->name('laporan.setujui');
+    Route::post('/laporan/{id}/revisi',  [MitraLaporanController::class, 'revisi']) ->name('laporan.revisi');
 
     // ── Nilai Akhir ────────────────────────────────────────────────────
     Route::get('/nilai-akhir', [MitraNilaiAkhirController::class, 'index'])->name('nilai-akhir.index');

@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -105,6 +106,7 @@ select:focus,textarea:focus{border-color:var(--primary);}
                         <th>Mahasiswa</th>
                         <th>Lowongan</th>
                         <th>Mulai Magang</th>
+                        <th>Laporan</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -123,6 +125,18 @@ select:focus,textarea:focus{border-color:var(--primary);}
                         <td style="color:var(--text-2);">{{ $lmr->lowongan->judul_lowongan ?? '-' }}</td>
                         <td style="font-size:12px;color:var(--text-3);">
                             {{ $lmr->diproses_pada ? \Carbon\Carbon::parse($lmr->diproses_pada)->format('d M Y') : '-' }}
+                        </td>
+                        <td>
+                          <div style="display:flex;flex-direction:column;gap:4px;">
+                            @forelse($lmr->laporanKegiatan as $lap)
+                              <a href="{{ Storage::url($lap->file_path) }}" target="_blank"
+                                 style="background:#f3e8ec;color:#8b1a3a;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;display:inline-block;">
+                                {{ $lap->judul_laporan }}
+                              </a>
+                            @empty
+                              <span style="font-size:11px;color:#aaa;">Belum ada laporan</span>
+                            @endforelse
+                          </div>
                         </td>
                         <td>
                             @if($lmr->status === 'diterima')

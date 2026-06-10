@@ -30,7 +30,7 @@ class MitraMahasiswaController extends Controller
         // Ambil semua lamaran berstatus 'diterima' (aktif magang) dan 'dihapus_mitra'
         $mahasiswaMagang = Lamaran::whereHas('lowongan', fn($q) => $q->where('mitra_id', $mitra->id))
             ->whereIn('status', ['diterima', 'dihapus_mitra'])
-            ->with(['mahasiswa.mahasiswa', 'lowongan'])
+            ->with(['mahasiswa.mahasiswa', 'lowongan', 'laporanKegiatan'])
             ->latest('diproses_pada')
             ->get();
 
